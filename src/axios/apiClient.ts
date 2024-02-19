@@ -1,15 +1,14 @@
-import { TOKEN } from '@/utils/constant'
-import Axios from 'axios'
+import { TOKEN } from "@/utils/constant";
+import Axios from "axios";
 
-const apiClient = Axios.create({ baseURL: "http://localhost:3000" })
+const apiClient = Axios.create({ baseURL: import.meta.env.VITE_BASE_URL });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN)
+  const token = localStorage.getItem(TOKEN);
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return config
-})
+  return config;
+});
 
-export default apiClient
-
+export default apiClient;

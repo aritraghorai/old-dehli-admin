@@ -34,7 +34,11 @@ const ProductDetailPage = () => {
     useState(false);
   const { productTags } = useProductTags();
   const navigate = useNavigate();
-  const { data, error, refetch } = useQuery<Product>({
+  const {
+    data: productDetail,
+    error,
+    refetch,
+  } = useQuery<Product>({
     queryKey: [apiPaths.PRODUCT_BY_ID(id!)],
     queryFn: () => getProductByDetail(id!),
   });
@@ -136,7 +140,7 @@ const ProductDetailPage = () => {
   );
 
   const productItemTable = useMaterialReactTable({
-    data: data?.productItems ?? [],
+    data: productDetail?.productItems ?? [],
     columns: productItemColumn,
     initialState: {
       density: "compact",
@@ -149,7 +153,7 @@ const ProductDetailPage = () => {
   });
 
   const productTagTable = useMaterialReactTable({
-    data: data?.productTag ?? [],
+    data: productDetail?.productTag ?? [],
     columns: productTagColumn,
     enableRowActions: true,
     initialState: {
@@ -177,9 +181,9 @@ const ProductDetailPage = () => {
   return (
     <FlowTemplate>
       <Stack p={2} gap={2}>
-        <Typography variant="heading2">Name: {data?.name}</Typography>
+        <Typography variant="heading2">Name: {productDetail?.name}</Typography>
         <Typography variant="heading2">
-          Description: {data?.description}
+          Description: {productDetail?.description}
         </Typography>
         <Typography variant="heading2">Product Items</Typography>
         <MaterialReactTable table={productItemTable} />
@@ -191,7 +195,7 @@ const ProductDetailPage = () => {
         onClose={toogleAddProductTagModal}
         tags={
           productTags?.filter(
-            (tag) => !data?.productTag?.some((t) => t.id === tag.id),
+            (tag) => !productDetail?.productTag?.some((t) => t.id === tag.id),
           ) ?? []
         }
         onSubmit={(tag) => addNewTag(tag.id)}
@@ -200,6 +204,7 @@ const ProductDetailPage = () => {
         open={showCreateProductItemValue}
         onClose={toogleCreateProductItemModal}
         onSubmit={(data) => {
+          //check product item already exist
           addProductItem(data);
         }}
       />

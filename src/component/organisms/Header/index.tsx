@@ -1,12 +1,11 @@
-import React from "react";
 import { Stack, styled } from "@mui/material";
 import theme from "@/theme";
-import Icon from "@/component/atoms/Icon";
 import Logout from "@/component/molecules/Logout";
 
 interface HeaderProps {
   username: string;
   email: string;
+  handleLogout: () => void;
 }
 
 const Container = styled(Stack)({
@@ -18,11 +17,11 @@ const Container = styled(Stack)({
   background: theme.palette.structural.STRUCTURAL_WHITE,
 });
 
-const Header = ({ username, email }: HeaderProps) => {
+const Header = ({ username, email, handleLogout }: HeaderProps) => {
   return (
     <Container direction="row">
       {/* <Icon src={} alt="BellIcon" /> */}
-      <Logout username={username} email={email} handleLogout={() => {}} />
+      <Logout username={username} email={email} handleLogout={handleLogout} />
     </Container>
   );
 };

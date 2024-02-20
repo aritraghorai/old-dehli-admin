@@ -17,6 +17,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ME } from "./axios/api";
 import { useEffect } from "react";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import ShopsPage from "./pages/ShopsPage";
+import ProductOptionPage from "./pages/ConfigPage";
 
 const AuthenticateRoutes = () => {
   const { isAuthenticated } = useRecoilValue(authAtom);
@@ -32,7 +34,7 @@ const UnAuthenticateRoutes = () => {
 
   const previousLocation = location.state?.pathname || "/dashboard";
   if (isAuthenticated) {
-    return <Navigate to={previousLocation}/>;
+    return <Navigate to={previousLocation} />;
   }
   return <Outlet />;
 };
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: "product/:id",
         element: <ProductDetailPage />,
+      },
+      {
+        path: "shops",
+        element: <ShopsPage />,
+      },
+      {
+        path: "product-options",
+        element: <ProductOptionPage />,
       },
     ],
   },

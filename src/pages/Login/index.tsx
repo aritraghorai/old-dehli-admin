@@ -1,4 +1,4 @@
-import { ME } from "@/axios/api";
+import { Login } from "@/axios/api";
 import Button from "@/component/atoms/Button";
 import InputLabel from "@/component/molecules/InputLabel";
 import AuthTemplate from "@/component/templates/AuthTemplate";
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationKey: ["login"],
-    mutationFn: (data: LoginFormBody) => ME(data),
+    mutationFn: (data: LoginFormBody) => Login(data),
     onSuccess: (data) => {
       localStorage.setItem(TOKEN, data.token);
       localStorage.setItem(USER, JSON.stringify(data.data.user));

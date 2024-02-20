@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import ShopsPage from "./pages/ShopsPage";
 import ProductOptionPage from "./pages/ConfigPage";
+import ProductTagPage from "./pages/ProductTagPages";
 
 const AuthenticateRoutes = () => {
   const { isAuthenticated } = useRecoilValue(authAtom);
@@ -68,6 +69,11 @@ export const router = createBrowserRouter([
         path: "product-options",
         element: <ProductOptionPage />,
       },
+      {
+        path: "product-tag",
+        element: <ProductTagPage />,
+      },
+
     ],
   },
   {

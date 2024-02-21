@@ -15,11 +15,12 @@ import authAtom from "./store/AuthState";
 import CategoryPage from "./pages/CategoryPage";
 import { useQuery } from "@tanstack/react-query";
 import { ME } from "./axios/api";
-import { useEffect } from "react";
-import ProductDetailPage from "./pages/ProductDetailPage";
+import { Suspense, lazy, useEffect } from "react";
 import ShopsPage from "./pages/ShopsPage";
 import ProductOptionPage from "./pages/ConfigPage";
 import ProductTagPage from "./pages/ProductTagPages";
+
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
 const AuthenticateRoutes = () => {
   const { isAuthenticated } = useRecoilValue(authAtom);
@@ -54,12 +55,12 @@ export const router = createBrowserRouter([
         element: <CategoryPage />,
       },
       {
-        path: "",
-        element: <Navigate to="/dashboard" />,
-      },
-      {
         path: "product/:id",
-        element: <ProductDetailPage />,
+        element: (
+          <Suspense fallback={<div>loading...</div>}>
+            <ProductDetailPage />
+          </Suspense>
+        ),
       },
       {
         path: "shops",
@@ -73,7 +74,10 @@ export const router = createBrowserRouter([
         path: "product-tag",
         element: <ProductTagPage />,
       },
-
+      {
+        path: "",
+        element: <Navigate to="/dashboard" />,
+      },
     ],
   },
   {

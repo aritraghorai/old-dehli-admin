@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
     error,
     refetch,
   } = useQuery<Product>({
-    queryKey: [apiPaths.PRODUCT_BY_ID(id!)],
+    queryKey: [apiPaths.PRODUCT, id],
     queryFn: () => getProductByDetail(id!),
   });
 
@@ -54,7 +54,7 @@ const ProductDetailPage = () => {
   });
 
   const { mutate: addNewTag } = useMutation({
-    mutationKey: ["addNewTag"],
+    mutationKey: ["addNewTagProductDetail"],
     mutationFn: (productTagId: string) => addProductTag(id!, productTagId),
     onSuccess: () => {
       toast.success("Tag Added");

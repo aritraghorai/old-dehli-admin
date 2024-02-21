@@ -4,7 +4,6 @@ import {
   Image,
   LoginFormBody,
   ProductForm,
-  ProductItemForm,
   ProductItemRequestBody,
   ProductOptionForm,
   ProductTag,
@@ -96,7 +95,10 @@ export const createProductOption = async (data: ProductOptionForm) => {
   return response.data.data;
 };
 
-export const createProductOptionValue = async (id, data: ProductOptionForm) => {
+export const createProductOptionValue = async (
+  id: string,
+  data: ProductOptionForm,
+) => {
   const response = await apiClient.post(
     apiPaths.PRODUCT_OPTION_BY_VALUE(id),
     data,

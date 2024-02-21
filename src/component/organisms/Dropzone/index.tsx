@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -45,7 +46,7 @@ function Dropzone({ onChange, error }: DropzoneProps) {
     },
   });
 
-  const thumbs = files.map((file) => (
+  const thumbs = files.map((file: any) => (
     <div
       style={{
         display: "inline-flex",
@@ -73,7 +74,8 @@ function Dropzone({ onChange, error }: DropzoneProps) {
   ));
 
   useEffect(() => {
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () =>
+      files.forEach((file: any) => URL.revokeObjectURL(file.preview));
   }, []);
 
   return (
@@ -91,7 +93,11 @@ function Dropzone({ onChange, error }: DropzoneProps) {
         <Typography variant="body2">
           Drag 'n' drop some files here, or click to select files
         </Typography>
-        {!!error && <Typography variant="body2" color="red">{error}</Typography>}
+        {!!error && (
+          <Typography variant="body2" color="red">
+            {error}
+          </Typography>
+        )}
       </Box>
       <aside
         style={{

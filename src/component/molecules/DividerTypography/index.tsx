@@ -1,15 +1,15 @@
-import React, { memo } from 'react'
-import { StyledDivider } from './styled'
-import theme from '@/theme'
-import { Typography } from '@mui/material'
+import { memo } from "react";
+import { StyledDivider } from "./styled";
+import theme from "@/theme";
+import { Typography } from "@mui/material";
 
 interface DividerTypographyProps {
-  label?: string
+  label?: string;
 }
 
 const DividerTypography = memo(({ label }: DividerTypographyProps) => {
   if (!label) {
-    return <StyledDivider data-testid="divider" />
+    return <StyledDivider data-testid="divider" />;
   }
   return (
     <StyledDivider>
@@ -17,8 +17,7 @@ const DividerTypography = memo(({ label }: DividerTypographyProps) => {
         {label}
       </Typography>
     </StyledDivider>
-  )
-})
-DividerTypography.displayName = 'DividerTypography'
-export default DividerTypography
-
+  );
+});
+DividerTypography.displayName = "DividerTypography";
+export default DividerTypography;

@@ -21,6 +21,7 @@ import {
 import useOptions from "@/hooks/useOptions";
 import { useEffect, useMemo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Dropzone from "../Dropzone";
 
 interface CreateNewProductItemModalProps extends Omit<DialogProps, "onSubmit"> {
   onSubmit: (data: ProductItemForm) => void;
@@ -40,6 +41,7 @@ const CreateNewProductItemModal: React.FC<CreateNewProductItemModalProps> = ({
     formState: { isValid, errors },
   } = useForm<ProductItemForm>({
     resolver: zodResolver(ProductItemSchema),
+    mode: "all",
   });
 
   const { productOption = [] } = useOptions();
@@ -61,14 +63,18 @@ const CreateNewProductItemModal: React.FC<CreateNewProductItemModalProps> = ({
         newOption.push(val.optionValue.id);
       }
     }
-    setValue("optionValues", newOption);
+    setValue("optionValues", newOption, {
+      shouldValidate: true,
+    });
   }, [productOption, options, setValue]);
 
   const handleSubmitAndClose = (val: ProductItemForm) => {
-    onSubmit(val);
-    setOptions([]);
-    reset();
-    onClose();
+    if (isValid) {
+      onSubmit(val);
+      setOptions([]);
+      reset();
+      onClose();
+    }
   };
 
   const handleClose = () => {
@@ -108,6 +114,12 @@ const CreateNewProductItemModal: React.FC<CreateNewProductItemModalProps> = ({
             error={!!errors.price?.message}
             helperText={errors.price?.message}
             {...register("price")}
+          />
+          <Dropzone
+            onChange={(file) => {
+              setValue("images", file);
+            }}
+            error={errors.images?.message}
           />
           {options.map((_val, index) => (
             <>

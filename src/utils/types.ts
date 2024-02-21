@@ -54,6 +54,8 @@ export type Category = {
   updatedAt: string;
   description: string;
   image: Image;
+  subCategories: Array<Category>;
+  parent?: Category;
 };
 
 export type Shop = {
@@ -130,13 +132,62 @@ export const ProductItemSchema = z.object({
   sku: z.string().min(3).max(20),
   stock: z.coerce
     .number()
-    .positive()
+    .positive("Stock must be a positive number")
     .transform((val) => +val),
   price: z.coerce
     .number()
-    .positive()
+    .positive("Price Must Be Positive Number")
     .transform((val) => +val),
-  images: z.array(z.string().uuid()).optional(),
+  images: z.array(z.any()).min(1, "Minimum 1 Image").max(5, "Maximun 5 Image"),
   optionValues: z.array(z.string().uuid()).optional(),
 });
 export type ProductItemForm = z.infer<typeof ProductItemSchema>;
+
+export interface ProductItemRequestBody
+  extends Omit<ProductItemForm, "images"> {
+  images: Array<string>;
+}
+
+export const categorySchema = z.object({
+  name: z.string().min(3).max(255),
+  slug: z.string().min(3).max(255),
+  parentCategoryId: z.string().uuid().optional(),
+  description: z.string().min(3).max(255).optional(),
+});
+
+export type CategoryForm = z.infer<typeof categorySchema>;
+
+export const ShopFormScham = z.object({
+  name: z
+    .string()
+    .min(3, {
+      message: "Name Should minimum 3 character",
+    })
+    .max(255),
+  description: z
+    .string()
+    .min(3, {
+      message: "description should minimum 3 character",
+    })
+    .max(255),
+  images: z
+    .array(z.any(), {
+      required_error: "Minimum 1 Image",
+    })
+    .min(1, {
+      message: "Minimum 1 Image",
+    })
+    .max(5, {
+      message: "Maximum 5 Image",
+    }),
+});
+
+export type ShopForm = z.infer<typeof ShopFormScham>;
+
+export interface ShopRequestBody extends Omit<ShopForm, "images"> {
+  images: Array<string>;
+}
+
+export interface ProductOptionForm {
+  value: string;
+}

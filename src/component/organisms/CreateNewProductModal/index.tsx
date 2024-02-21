@@ -38,12 +38,16 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
     formState: { isValid, errors },
   } = useForm<ProductForm>({
     resolver: zodResolver(productFormSchema),
+    shouldFocusError: true,
+    mode: "all",
   });
 
   const handleSubmitAndClose = (val: ProductForm) => {
-    onSubmit(val);
-    reset();
-    onClose();
+    if (isValid) {
+      onSubmit(val);
+      reset();
+      onClose();
+    }
   };
 
   const handleClose = () => {
@@ -87,7 +91,11 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
             id="tags-standard"
             options={data}
             getOptionLabel={(data) => data.name}
-            onChange={(_, value) => setValue("categoryId", value?.id as string)}
+            onChange={(_, value) =>
+              setValue("categoryId", value?.id as string, {
+                shouldValidate: true,
+              })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -103,7 +111,11 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
             id="tags-standard"
             options={shops}
             getOptionLabel={(data) => data.name}
-            onChange={(_, value) => setValue("shopId", value?.id as string)}
+            onChange={(_, value) =>
+              setValue("shopId", value?.id as string, {
+                shouldValidate: true,
+              })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -123,6 +135,9 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
               setValue(
                 "productTags",
                 value.map((v) => v.id),
+                {
+                  shouldValidate: true,
+                },
               )
             }
             getOptionLabel={(data) => data.name}

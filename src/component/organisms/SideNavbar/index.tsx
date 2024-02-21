@@ -13,8 +13,8 @@ export const navItems = [
   { id: 1, label: "Products", iconSrc: HomeIcon, path: "/products" },
   { id: 2, label: "Category", iconSrc: HomeIcon, path: "/category" },
   { id: 3, label: "Shops", iconSrc: HomeIcon, path: "/shops" },
-  { id: 3, label: "Product Options", iconSrc: HomeIcon, path: "/product-options" },
-  { id: 3, label: "Product Tag", iconSrc: HomeIcon, path: "/product-tag" },
+  { id: 4, label: "Product Options", iconSrc: HomeIcon, path: "/product-options" },
+  { id: 5, label: "Product Tag", iconSrc: HomeIcon, path: "/product-tag" },
 ];
 
 const SideNavBar = () => {

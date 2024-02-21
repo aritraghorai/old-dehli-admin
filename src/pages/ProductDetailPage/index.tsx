@@ -26,6 +26,7 @@ import {
 import AddProductTagModal from "@/component/organisms/CreateTagModal";
 import useProductTags from "@/hooks/useProductTag";
 import CreateNewProductItemModal from "@/component/organisms/CreateProductItemModal";
+import { uploadMultipleImages } from "@/utils/function";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -203,9 +204,13 @@ const ProductDetailPage = () => {
       <CreateNewProductItemModal
         open={showCreateProductItemValue}
         onClose={toogleCreateProductItemModal}
-        onSubmit={(data) => {
+        onSubmit={async (data) => {
           //check product item already exist
-          addProductItem(data);
+          const images = await uploadMultipleImages(data.images);
+          addProductItem({
+            ...data,
+            images,
+          });
         }}
       />
     </FlowTemplate>

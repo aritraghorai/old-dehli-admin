@@ -1,28 +1,40 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   type MRT_ColumnDef,
   useMaterialReactTable,
   MaterialReactTable,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import apiPaths from "@/axios/apiPaths";
-import { Category } from "@/utils/types";
-import { useQuery } from "@tanstack/react-query";
-import { getAllCategories } from "@/axios/api";
+import { Category, CategoryForm } from "@/utils/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createCategory, getAllCategories } from "@/axios/api";
+import CreateCategoryModal from "@/component/organisms/CreateCategoryModal";
+import toast from "react-hot-toast";
 
 export const CategoryPage = () => {
-  const { data, isLoading, isRefetching } = useQuery<Category[]>({
+  const [showCreateCategoryModal, setShowCreateCategoryModal] = useState(false);
+
+  const toggleShowCreateCategoryModal = () =>
+    setShowCreateCategoryModal((prev) => !prev);
+
+  const { data, isLoading, isRefetching, refetch } = useQuery<Category[]>({
     queryKey: [apiPaths.CATEGORY],
     queryFn: getAllCategories,
   });
 
+  const { mutate } = useMutation({
+    mutationKey: [apiPaths.CATEGORY, "createProduct"],
+    mutationFn: (data: CategoryForm) => createCategory(data),
+    onSuccess: () => {
+      toast.success("Category created successfully");
+      refetch();
+    },
+  });
+
   const columns = useMemo<MRT_ColumnDef<Category>[]>(
     () => [
-      {
-        accessorKey: "id",
-        header: "ID",
-      },
       {
         accessorKey: "name",
         header: "Name",
@@ -35,6 +47,19 @@ export const CategoryPage = () => {
         accessorKey: "description",
         header: "Description",
       },
+      {
+        subCategory: "Actions",
+        header: "Actions",
+      },
+      {
+        header: "Sub Category",
+        accessorFn: (row) =>
+          row.subCategories.map((subCategory) => subCategory.name).join(", "),
+      },
+      {
+        header: "Parent Category",
+        accessorFn: (row) => row.parent?.name,
+      },
     ],
     [],
     //end
@@ -46,7 +71,6 @@ export const CategoryPage = () => {
     enablePagination: true,
     enableColumnFilters: false,
     enableSorting: false,
-    enableRowSelection: true,
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
     initialState: {
@@ -56,14 +80,23 @@ export const CategoryPage = () => {
       isLoading,
       showProgressBars: isRefetching,
     },
+    renderTopToolbarCustomActions: () => (
+      <Button variant="contained" onClick={toggleShowCreateCategoryModal}>
+        Create New Category
+      </Button>
+    ),
   });
 
-  //using MRT_Table instead of MaterialReactTable if we do not need any of the toolbar components or features
   return (
     <FlowTemplate>
       <Stack p={2} gap={2}>
         <Typography variant="h4">Category</Typography>
         <MaterialReactTable table={table} />
+        <CreateCategoryModal
+          open={showCreateCategoryModal}
+          onClose={toggleShowCreateCategoryModal}
+          onSubmit={mutate}
+        />
       </Stack>
     </FlowTemplate>
   );

@@ -13,6 +13,10 @@ const PRODUCT_TAG_ID_AND_PRODUCT_ID = (
 ) => `product/${productId}/tag/${productTagId}`;
 const PRODUCT_OPTION = "product-option";
 const PRODUCT_ITEM = (productId: string) => `${PRODUCT}/${productId}/item`;
+const CATEGORY_ALL = "category/all";
+const UPLOAD_IMAGE = "upload/image";
+
+const PRODUCT_OPTION_BY_VALUE = (id: string) => `${PRODUCT_OPTION}/${id}/value`;
 
 export default {
   PRODUCT,
@@ -27,4 +31,7 @@ export default {
   PRODUCT_TAG_ID_AND_PRODUCT_ID,
   PRODUCT_OPTION,
   PRODUCT_ITEM,
+  CATEGORY_ALL,
+  UPLOAD_IMAGE,
+  PRODUCT_OPTION_BY_VALUE,
 };

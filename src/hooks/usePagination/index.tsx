@@ -11,7 +11,7 @@ interface QueryResponse<T> {
   totalPage: number;
 }
 
-function usePagination<T>(url: string, initialPage = 1, initialLimit = 10) {
+function usePagination<T>(url: string, initialPage = 0, initialLimit = 10) {
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: initialPage,
     pageSize: initialLimit,

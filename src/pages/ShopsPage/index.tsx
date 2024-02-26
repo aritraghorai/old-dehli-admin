@@ -5,14 +5,17 @@ import {
   MaterialReactTable,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Checkbox, Stack, Typography } from "@mui/material";
 import { Shop } from "@/utils/types";
 import useShop from "@/hooks/useShop";
 import CreateShopModal from "@/component/organisms/CreateShopModal";
 import { uploadMultipleImages } from "@/utils/function";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export const ShopsPage = () => {
-  const { shops, isLoading, isRefetching, addNewShop } = useShop();
+  const { shops, isLoading, isRefetching, addNewShop, UpdateShopbyId } =
+    useShop();
 
   const [showCreateShopModal, setShowCreateShopModal] = useState(false);
 
@@ -44,6 +47,7 @@ export const ShopsPage = () => {
     data: shops ?? [],
     enablePagination: true,
     enableColumnFilters: false,
+    enableRowActions: true,
     enableSorting: false,
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
@@ -58,6 +62,23 @@ export const ShopsPage = () => {
       <Button variant="contained" onClick={toogleCreateShopModal}>
         Create New Shop
       </Button>
+    ),
+    renderRowActions: (props) => (
+      <Stack>
+        <Checkbox
+          icon={<RadioButtonUncheckedIcon />}
+          checkedIcon={<CheckCircleIcon />}
+          checked={props.row.original.isActive}
+          onChange={(e, checked) => {
+            UpdateShopbyId({
+              id: props.row.original.id,
+              data: {
+                isActive: checked,
+              },
+            });
+          }}
+        />
+      </Stack>
     ),
   });
 

@@ -3,12 +3,14 @@ import {
   CategoryForm,
   Image,
   LoginFormBody,
+  NewProductTagForm,
   ProductForm,
   ProductItemRequestBody,
   ProductOptionForm,
   ProductTag,
   Shop,
   ShopRequestBody,
+  UpdateShopType,
   User,
 } from "@/utils/types";
 import apiClient from "./apiClient";
@@ -92,6 +94,16 @@ export const getAllProductOption = async () => {
 
 export const createProductOption = async (data: ProductOptionForm) => {
   const response = await apiClient.post(apiPaths.PRODUCT_OPTION, data);
+  return response.data.data;
+};
+
+export const UpdateShop = async (id: string, data: Partial<UpdateShopType>) => {
+  const response = await apiClient.put(apiPaths.SHOP_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const createNewProductTag = (data: NewProductTagForm) => {
+  const response = apiClient.post(apiPaths.PRODUCT_TAG, data);
   return response.data.data;
 };
 

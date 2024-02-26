@@ -1,6 +1,6 @@
-import { createShop, getAllShops } from "@/axios/api";
+import { UpdateShop, createShop, getAllShops } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
-import { Shop, ShopRequestBody } from "@/utils/types";
+import { Shop, ShopRequestBody, UpdateShopType } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -11,7 +11,7 @@ const useShop = () => {
   });
 
   const { mutate: addNewShop } = useMutation({
-    mutationKey: ["addNewTag", apiPaths.ALL_SHOPS],
+    mutationKey: ["addNewShop", apiPaths.ALL_SHOPS],
     mutationFn: (shop: ShopRequestBody) => createShop(shop),
     onSuccess: () => {
       toast.success("Shop Added");
@@ -19,7 +19,17 @@ const useShop = () => {
     },
   });
 
-  return { shops: data, isLoading, isRefetching, addNewShop };
+  const { mutate: UpdateShopbyId } = useMutation({
+    mutationKey: [apiPaths.SHOP, "updateShopById"],
+    mutationFn: (data: { data: Partial<UpdateShopType>; id: string }) =>
+      UpdateShop(data.id, data.data),
+    onSuccess: () => {
+      toast.success("Update Shop Successfully");
+      refetch();
+    },
+  });
+
+  return { shops: data, isLoading, isRefetching, addNewShop, UpdateShopbyId };
 };
 
 export default useShop;

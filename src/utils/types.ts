@@ -64,6 +64,7 @@ export type Shop = {
   slug: string;
   description: string;
   images: Array<Image>;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -182,6 +183,23 @@ export const ShopFormScham = z.object({
     }),
 });
 
+export const NewProductTagFormSchema = z.object({
+  name: z
+    .string()
+    .min(3, {
+      message: "Name Should minimum 3 character",
+    })
+    .max(255),
+  description: z
+    .string()
+    .min(3, {
+      message: "description should minimum 3 character",
+    })
+    .max(255),
+});
+
+export type NewProductTagForm = z.infer<typeof NewProductTagFormSchema>;
+
 export type ShopForm = z.infer<typeof ShopFormScham>;
 
 export interface ShopRequestBody extends Omit<ShopForm, "images"> {
@@ -191,3 +209,7 @@ export interface ShopRequestBody extends Omit<ShopForm, "images"> {
 export interface ProductOptionForm {
   value: string;
 }
+
+export type UpdateShopType = {
+  isActive: boolean;
+};

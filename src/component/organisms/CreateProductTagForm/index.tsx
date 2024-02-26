@@ -10,31 +10,29 @@ import {
   TextField,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ShopForm, NewProductTagFormSchema } from "@/utils/types";
-import Dropzone from "../Dropzone";
+import { NewProductTagFormSchema, NewProductTagForm } from "@/utils/types";
 
-interface CreateShopModalProps extends Omit<DialogProps, "onSubmit"> {
-  onSubmit: (data: ShopForm) => void;
+interface CreateTagModalProps extends Omit<DialogProps, "onSubmit"> {
+  onSubmit: (data: NewProductTagForm) => void;
   onClose: () => void;
 }
 
-const CreateShopModal: React.FC<CreateShopModalProps> = ({
+const CreateProductTagModal: React.FC<CreateTagModalProps> = ({
   onSubmit,
   onClose,
   ...props
 }) => {
   const {
     register,
-    setValue,
     handleSubmit,
     reset,
     formState: { isValid, errors },
-  } = useForm<ShopForm>({
+  } = useForm<NewProductTagForm>({
     resolver: zodResolver(NewProductTagFormSchema),
     mode: "all",
   });
 
-  const handleSubmitAndClose = (val: ShopForm) => {
+  const handleSubmitAndClose = (val: NewProductTagForm) => {
     if (isValid) {
       onSubmit(val);
       reset();
@@ -49,7 +47,7 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
 
   return (
     <Dialog onClose={handleClose} {...props}>
-      <DialogTitle>Create New Product</DialogTitle>
+      <DialogTitle>Create New Product Tag</DialogTitle>
       <DialogContent dividers>
         <Stack
           gap={3}
@@ -72,12 +70,6 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
             helperText={errors.description?.message}
             {...register("description")}
           />
-          <Dropzone
-            onChange={(file) => {
-              setValue("images", file);
-            }}
-            error={errors.images?.message}
-          />
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -92,4 +84,4 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
   );
 };
 
-export default CreateShopModal;
+export default CreateProductTagModal;

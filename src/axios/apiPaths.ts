@@ -18,6 +18,8 @@ const UPLOAD_IMAGE = "upload/image";
 
 const PRODUCT_OPTION_BY_VALUE = (id: string) => `${PRODUCT_OPTION}/${id}/value`;
 
+const SHOP_BY_ID = (id: string) => `shop/${id}`;
+
 export default {
   PRODUCT,
   CATEGORY,
@@ -34,4 +36,5 @@ export default {
   CATEGORY_ALL,
   UPLOAD_IMAGE,
   PRODUCT_OPTION_BY_VALUE,
+  SHOP_BY_ID,
 };

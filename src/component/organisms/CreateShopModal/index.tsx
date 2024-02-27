@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ShopForm, NewProductTagFormSchema } from "@/utils/types";
+import { ShopForm, ShopFormScham } from "@/utils/types";
 import Dropzone from "../Dropzone";
 
 interface CreateShopModalProps extends Omit<DialogProps, "onSubmit"> {
@@ -30,7 +30,7 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
     reset,
     formState: { isValid, errors },
   } = useForm<ShopForm>({
-    resolver: zodResolver(NewProductTagFormSchema),
+    resolver: zodResolver(ShopFormScham),
     mode: "all",
   });
 
@@ -49,7 +49,7 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
 
   return (
     <Dialog onClose={handleClose} {...props}>
-      <DialogTitle>Create New Product</DialogTitle>
+      <DialogTitle>Create New Shop</DialogTitle>
       <DialogContent dividers>
         <Stack
           gap={3}

@@ -11,7 +11,7 @@ import useShop from "@/hooks/useShop";
 import CreateShopModal from "@/component/organisms/CreateShopModal";
 import { uploadMultipleImages } from "@/utils/function";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 export const ShopsPage = () => {
   const { shops, isLoading, isRefetching, addNewShop, UpdateShopbyId } =
@@ -69,7 +69,7 @@ export const ShopsPage = () => {
           icon={<RadioButtonUncheckedIcon />}
           checkedIcon={<CheckCircleIcon />}
           checked={props.row.original.isActive}
-          onChange={(e, checked) => {
+          onChange={(_e, checked) => {
             UpdateShopbyId({
               id: props.row.original.id,
               data: {

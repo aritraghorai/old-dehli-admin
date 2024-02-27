@@ -102,9 +102,9 @@ export const UpdateShop = async (id: string, data: Partial<UpdateShopType>) => {
   return response.data.data;
 };
 
-export const createNewProductTag = (data: NewProductTagForm) => {
-  const response = apiClient.post(apiPaths.PRODUCT_TAG, data);
-  return response.data.data;
+export const createNewProductTag = async (data: NewProductTagForm) => {
+  const response = await apiClient.post(apiPaths.PRODUCT_TAG, data);
+  return response.data;
 };
 
 export const createProductOptionValue = async (

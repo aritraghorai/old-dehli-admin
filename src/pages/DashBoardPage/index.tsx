@@ -24,12 +24,12 @@ export const DashBoardPage = () => {
     isLoading,
     isRefetching,
     setQueryParams,
-  } = usePagination<Product>(apiPaths.PRODUCT);
+  } = usePagination<Product>(apiPaths.PRODUCT_ALL);
   const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
-    mutationKey: [apiPaths.PRODUCT, "createProduct"],
+    mutationKey: [apiPaths.PRODUCT_ALL, "createProduct"],
     mutationFn: (data: ProductForm) => createProduct(data),
   });
 

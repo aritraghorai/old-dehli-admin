@@ -74,7 +74,9 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
           />
           <Dropzone
             onChange={(file) => {
-              setValue("images", file);
+              setValue("images", file, {
+                shouldValidate: true,
+              });
             }}
             error={errors.images?.message}
           />

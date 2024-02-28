@@ -10,6 +10,7 @@ import {
   ProductTag,
   Shop,
   ShopRequestBody,
+  UpdateProductRequestBody,
   UpdateShopType,
   User,
 } from "@/utils/types";
@@ -99,6 +100,14 @@ export const createProductOption = async (data: ProductOptionForm) => {
 
 export const UpdateShop = async (id: string, data: Partial<UpdateShopType>) => {
   const response = await apiClient.put(apiPaths.SHOP_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const updateProduct = async (
+  id: string,
+  data: UpdateProductRequestBody,
+) => {
+  const response = await apiClient.patch(apiPaths.PRODUCT_BY_ID(id), data);
   return response.data.data;
 };
 

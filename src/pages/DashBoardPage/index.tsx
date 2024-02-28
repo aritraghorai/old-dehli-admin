@@ -3,18 +3,39 @@ import {
   type MRT_ColumnDef,
   useMaterialReactTable,
   MaterialReactTable,
+  MRT_EditActionButtons,
+  MRT_TableOptions,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { IconButton, Stack, Typography } from "@mui/material";
+import {
+  Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 import apiPaths from "@/axios/apiPaths";
 import usePagination from "@/hooks/usePagination";
-import { Product, ProductForm } from "@/utils/types";
+import {
+  Product,
+  ProductForm,
+  UpdateProductRequestBody,
+  UpdateProductRequestBodySchema,
+} from "@/utils/types";
 import Button from "@/component/atoms/Button";
 import CreateNewProductModal from "@/component/organisms/CreateNewProductModal";
 import { useMutation } from "@tanstack/react-query";
-import { createProduct } from "@/axios/api";
+import { createProduct, updateProduct } from "@/axios/api";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const DashBoardPage = () => {
   const {
@@ -28,9 +49,30 @@ export const DashBoardPage = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
 
+  const {
+    setValue,
+    reset,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<UpdateProductRequestBody>({
+    resolver: zodResolver(UpdateProductRequestBodySchema),
+    mode: "all",
+  });
+
   const { mutate } = useMutation({
     mutationKey: [apiPaths.PRODUCT_ALL, "createProduct"],
     mutationFn: (data: ProductForm) => createProduct(data),
+  });
+
+  const { mutate: updateProductById } = useMutation({
+    mutationKey: [apiPaths.PRODUCT_ALL, "updateProduct"],
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateProductRequestBody;
+    }) => updateProduct(id, data),
   });
 
   const handleGlobalFilterChange = (filter: string) => {
@@ -45,33 +87,82 @@ export const DashBoardPage = () => {
   const toogleCreateProductModal = () => {
     setShowCreateProductModal((prev) => !prev);
   };
-
   const columns = useMemo<MRT_ColumnDef<Product>[]>(
     () => [
       {
+        id: "id",
+        accessorKey: "id",
+        header: "ID",
+        enableEditing: false,
+        enableHiding: false,
+      },
+      {
         accessorKey: "name",
         header: "Name",
+        muiEditTextFieldProps: {
+          error: !!errors.name?.message,
+          helperText: errors.name?.message,
+          required: true,
+        },
       },
       {
         accessorKey: "slug",
         header: "Slug",
+        muiEditTextFieldProps: {
+          error: !!errors.slug?.message,
+          helperText: errors.slug?.message,
+          required: true,
+        },
       },
       {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "shop.name",
+        header: "Shop Name",
+        enableEditing: false,
+      },
+      {
+        accessorKey: "price",
+        header: "Price",
+        muiEditTextFieldProps: {
+          error: !!errors.price?.message,
+          helperText: errors.price?.message,
+          required: true,
+        },
       },
       {
         accessorKey: "category.name",
         header: "Category",
+        enableEditing: false,
       },
     ],
-    [],
+    [errors],
     //end
   );
 
   const handleRowClick = (row: Product) => {
     navigate(`/product/${row.id}`);
   };
+
+  const handleSaveProduct: MRT_TableOptions<Product>["onEditingRowSave"] =
+    async ({ values, table }) => {
+      console.log("values", values);
+      Object.keys(values).forEach((key) => {
+        if (key === "name" || key === "slug" || key === "price") {
+          setValue(key as keyof UpdateProductRequestBody, values[key], {
+            shouldValidate: true,
+          });
+        }
+      });
+      console.log("values", values);
+      if (isValid) {
+        updateProductById({
+          id: values.id,
+          data: getValues(),
+        });
+        table.setEditingRow(null);
+      } else {
+        table.setEditingRow(null);
+      }
+    };
 
   const table = useMaterialReactTable({
     columns,
@@ -84,10 +175,14 @@ export const DashBoardPage = () => {
     positionToolbarAlertBanner: "bottom",
     manualPagination: true,
     onPaginationChange: setPagination,
+    enableEditing: true,
+    editDisplayMode: "modal",
     rowCount: pagination.pageSize,
     enableGlobalFilter: true,
     manualFiltering: true,
     enableRowActions: true,
+    onEditingRowCancel: () => reset(),
+    onEditingRowSave: handleSaveProduct,
     muiPaginationProps: {
       count: data?.totalPage ?? 0,
     },
@@ -108,9 +203,41 @@ export const DashBoardPage = () => {
       </Button>
     ),
     renderRowActions: (props) => (
-      <IconButton onClick={() => handleRowClick(props.row.original)}>
-        <VisibilityIcon />
-      </IconButton>
+      <Stack direction="row">
+        <Checkbox
+          icon={<RadioButtonUncheckedIcon />}
+          checkedIcon={<CheckCircleIcon />}
+          checked={props.row.original.isActive}
+          onChange={(_e, checked) => {
+            updateProductById({
+              id: props.row.original.id,
+              data: {
+                isActive: checked,
+              },
+            });
+          }}
+        />
+        <IconButton onClick={() => props.table.setEditingRow(props.row)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => handleRowClick(props.row.original)}>
+          <VisibilityIcon />
+        </IconButton>
+      </Stack>
+    ),
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="body2">Edit Product</DialogTitle>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+          dividers
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
     ),
   });
 

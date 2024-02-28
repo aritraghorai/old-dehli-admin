@@ -49,7 +49,7 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
 
   return (
     <Dialog onClose={handleClose} {...props}>
-      <DialogTitle>Create New Product</DialogTitle>
+      <DialogTitle>Create New Category</DialogTitle>
       <DialogContent dividers>
         <Stack
           gap={3}
@@ -82,7 +82,9 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
           <Autocomplete
             id="tags-standard"
             options={categories}
-            onChange={(_, value) => setValue("parentCategoryId", value?.id)}
+            onChange={(_, value) =>
+              setValue("parentCategoryId", value?.id, { shouldValidate: true })
+            }
             getOptionLabel={(data) => data.name}
             renderInput={(params) => (
               <TextField

@@ -97,6 +97,7 @@ export type Product = {
   category: Category;
   createdAt: string;
   updatedAt: string;
+  isActive: boolean;
 };
 
 export type Option = {
@@ -213,3 +214,14 @@ export interface ProductOptionForm {
 export type UpdateShopType = {
   isActive: boolean;
 };
+export const UpdateProductRequestBodySchema = z.object({
+  name: z.string().min(3).max(255).optional(),
+  description: z.string().min(3).max(255).optional(),
+  slug: z.string().min(3).max(255).optional(),
+  price: z.number().positive().optional(),
+  isActive: z.boolean().optional(),
+});
+
+export type UpdateProductRequestBody = z.infer<
+  typeof UpdateProductRequestBodySchema
+>;

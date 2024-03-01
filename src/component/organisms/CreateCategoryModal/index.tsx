@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@/component/atoms/Button";
 import useCategory from "@/hooks/useCategory";
 import { useForm } from "react-hook-form";
@@ -35,7 +36,6 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
     register,
     setValue,
     handleSubmit,
-    setValues,
     reset,
     formState: { errors },
   } = useForm<CategoryForm>({
@@ -57,9 +57,10 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
 
   useEffect(() => {
     Object.keys(initialValues || {}).forEach((key) => {
-      setValue(key as any, initialValues?.[key]);
+      const myKey = key as keyof CategoryForm;
+      setValue(myKey, initialValues?.[myKey]);
     });
-  }, [initialValues, setValues]);
+  }, [initialValues, setValue]);
 
   return (
     <Dialog onClose={handleClose} {...props}>

@@ -5,7 +5,7 @@ import {
   MaterialReactTable,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { Button, Checkbox, Stack, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Stack, Typography } from "@mui/material";
 import { Shop } from "@/utils/types";
 import useShop from "@/hooks/useShop";
 import CreateShopModal from "@/component/organisms/CreateShopModal";
@@ -79,6 +79,27 @@ export const ShopsPage = () => {
           }}
         />
       </Stack>
+    ),
+    renderDetailPanel: ({ row }) => (
+      <Box
+        sx={{
+          display: "grid",
+          margin: "auto",
+          gridTemplateColumns: "1fr 1fr",
+          width: "100%",
+        }}
+      >
+        {row.original.images.map((img) => (
+          <Stack direction="row" gap={2}>
+            <img
+              key={img.id}
+              src={img.url}
+              alt="product"
+              style={{ width: "100px", height: "100px" }}
+            />
+          </Stack>
+        ))}
+      </Box>
     ),
   });
 

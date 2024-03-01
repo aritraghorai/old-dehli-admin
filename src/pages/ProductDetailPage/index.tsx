@@ -163,12 +163,6 @@ const ProductDetailPage = () => {
       }),
     }),
     muiExpandButtonProps: ({ row, table }) => ({
-      children: row.getIsExpanded() ? (
-        <Button>App</Button>
-      ) : (
-        <Button>App</Button>
-      ),
-
       onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
       sx: {
         transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
@@ -191,12 +185,14 @@ const ProductDetailPage = () => {
           }}
         >
           {row.original.images.map((img) => (
-            <img
-              key={img.id}
-              src={img.url}
-              alt="product"
-              style={{ width: "100%", height: "100%" }}
-            />
+            <Stack direction="row" gap={2}>
+              <img
+                key={img.id}
+                src={img.url}
+                alt="product"
+                style={{ width: "100px", height: "100px" }}
+              />
+            </Stack>
           ))}
         </Box>
       ) : null,

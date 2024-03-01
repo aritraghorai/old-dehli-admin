@@ -59,6 +59,11 @@ export const createCategory = async (data: CategoryForm) => {
   const response = await apiClient.post(apiPaths.CATEGORY, data);
   return response.data.data;
 };
+export const updateCategory = async (id: string, data: CategoryForm) => {
+  const response = await apiClient.patch(apiPaths.CATEGORY_BY_ID(id), data);
+  return response.data.data;
+};
+
 export const createShop = async (data: ShopRequestBody) => {
   const response = await apiClient.post(apiPaths.SHOP, data);
   return response.data.data;

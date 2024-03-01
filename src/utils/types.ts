@@ -210,10 +210,28 @@ export interface ShopRequestBody extends Omit<ShopForm, "images"> {
 export interface ProductOptionForm {
   value: string;
 }
+export const updateShopValidatorSchema = z.object({
+  name: z
+    .string()
+    .min(3, {
+      message: "Name Should minimum 3 character",
+    })
+    .max(255)
+    .optional(),
+  description: z
+    .string()
+    .min(3, {
+      message: "description should minimum 3 character",
+    })
+    .max(255)
+    .optional(),
+});
 
-export type UpdateShopType = {
+export type UpdateShopRequestBody = z.infer<typeof updateShopValidatorSchema>;
+
+export interface UpdateShopType extends UpdateShopRequestBody {
   isActive: boolean;
-};
+}
 export const UpdateProductRequestBodySchema = z.object({
   name: z.string().min(3).max(255).optional(),
   description: z.string().min(3).max(255).optional(),
@@ -225,3 +243,4 @@ export const UpdateProductRequestBodySchema = z.object({
 export type UpdateProductRequestBody = z.infer<
   typeof UpdateProductRequestBodySchema
 >;
+export type FormType = "Create" | "Update";

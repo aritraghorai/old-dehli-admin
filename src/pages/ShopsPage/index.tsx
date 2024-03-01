@@ -1,21 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState } from "react";
 import {
   type MRT_ColumnDef,
   useMaterialReactTable,
   MaterialReactTable,
+  MRT_EditActionButtons,
+  MRT_TableOptions,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { Box, Button, Checkbox, Stack, Typography } from "@mui/material";
-import { Shop } from "@/utils/types";
+import {
+  Box,
+  Button,
+  Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import {
+  Shop,
+  UpdateShopRequestBody,
+  updateShopValidatorSchema,
+} from "@/utils/types";
 import useShop from "@/hooks/useShop";
 import CreateShopModal from "@/component/organisms/CreateShopModal";
 import { uploadMultipleImages } from "@/utils/function";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import { ZodError } from "zod";
+import toast from "react-hot-toast";
 
 export const ShopsPage = () => {
   const { shops, isLoading, isRefetching, addNewShop, UpdateShopbyId } =
     useShop();
+
+  const [shopValidationErrors, setShopValidationErrors] = useState<
+    UpdateShopRequestBody | undefined
+  >();
 
   const [showCreateShopModal, setShowCreateShopModal] = useState(false);
 
@@ -23,22 +47,70 @@ export const ShopsPage = () => {
     setShowCreateShopModal((prev) => !prev);
   };
 
+  const handleSaveShop: MRT_TableOptions<Shop>["onEditingRowSave"] = async ({
+    values,
+    table,
+  }) => {
+    try {
+      const parseValues = await updateShopValidatorSchema.parseAsync(
+        values,
+        {},
+      );
+
+      console.log("parseValues", parseValues);
+
+      UpdateShopbyId({
+        id: values.id,
+        data: parseValues,
+      });
+      setShopValidationErrors(undefined);
+      table.setEditingRow(null);
+    } catch (error: unknown) {
+      const zodError = error as ZodError;
+
+      const errors = zodError.errors.map((err) => {
+        const path = err.path.join(".");
+        return {
+          [path]: err.message,
+        };
+      });
+      toast.error(errors[0][Object.keys(errors[0])[0]] as string);
+      setShopValidationErrors(errors as any);
+    }
+  };
+
   const columns = useMemo<MRT_ColumnDef<Shop>[]>(
     () => [
       {
+        accessorKey: "id",
+        header: "ID",
+        enableEditing: false,
+      },
+      {
         accessorKey: "name",
         header: "Name",
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!shopValidationErrors?.name,
+          helperText: shopValidationErrors?.name,
+        },
       },
       {
         accessorKey: "slug",
         header: "Slug",
+        enableEditing: false,
       },
       {
         accessorKey: "description",
         header: "Description",
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!shopValidationErrors?.description,
+          helperText: shopValidationErrors?.description,
+        },
       },
     ],
-    [],
+    [shopValidationErrors],
     //end
   );
 
@@ -50,6 +122,8 @@ export const ShopsPage = () => {
     enableRowActions: true,
     enableSorting: false,
     paginationDisplayMode: "pages",
+    onEditingRowCancel: () => setShopValidationErrors(undefined),
+    onEditingRowSave: handleSaveShop,
     positionToolbarAlertBanner: "bottom",
     initialState: {
       density: "compact",
@@ -64,7 +138,7 @@ export const ShopsPage = () => {
       </Button>
     ),
     renderRowActions: (props) => (
-      <Stack>
+      <Stack direction="row" alignItems="center">
         <Checkbox
           icon={<RadioButtonUncheckedIcon />}
           checkedIcon={<CheckCircleIcon />}
@@ -78,8 +152,26 @@ export const ShopsPage = () => {
             });
           }}
         />
+        <IconButton onClick={() => props.table.setEditingRow(props.row)}>
+          <EditIcon />
+        </IconButton>
       </Stack>
     ),
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="body2">Edit Shop</DialogTitle>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+          dividers
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+
     renderDetailPanel: ({ row }) => (
       <Box
         sx={{

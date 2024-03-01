@@ -12,16 +12,21 @@ import {
   TextField,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CategoryForm, categorySchema } from "@/utils/types";
+import { CategoryForm, FormType, categorySchema } from "@/utils/types";
+import { useEffect } from "react";
 
 interface CreateCategoryModalProps extends Omit<DialogProps, "onSubmit"> {
   onSubmit: (data: CategoryForm) => void;
   onClose: () => void;
+  initialValues?: CategoryForm;
+  formType: FormType;
 }
 
 const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
   onSubmit,
   onClose,
+  initialValues,
+  formType = "Create",
   ...props
 }) => {
   const { data: categories = [] } = useCategory();
@@ -30,10 +35,13 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
     register,
     setValue,
     handleSubmit,
+    setValues,
     reset,
     formState: { errors },
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
+    mode: "all",
+    defaultValues: initialValues,
   });
 
   const handleSubmitAndClose = (val: CategoryForm) => {
@@ -47,9 +55,15 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    Object.keys(initialValues || {}).forEach((key) => {
+      setValue(key as any, initialValues?.[key]);
+    });
+  }, [initialValues, setValues]);
+
   return (
     <Dialog onClose={handleClose} {...props}>
-      <DialogTitle>Create New Category</DialogTitle>
+      <DialogTitle>{formType} New Category</DialogTitle>
       <DialogContent dividers>
         <Stack
           gap={3}
@@ -101,7 +115,7 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
       </DialogContent>
       <DialogActions>
         <Button type="submit" form="CreateNewProductModal" value="update">
-          Create
+          {formType}
         </Button>
         <Button color="error" onClick={handleClose}>
           Cancel

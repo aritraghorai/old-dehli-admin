@@ -20,6 +20,7 @@ const PRODUCT_OPTION_BY_VALUE = (id: string) => `${PRODUCT_OPTION}/${id}/value`;
 
 const SHOP_BY_ID = (id: string) => `shop/${id}`;
 const PRODUCT_ALL = "product/all";
+const CATEGORY_BY_ID = (id: string) => `category/${id}`;
 
 export default {
   PRODUCT,
@@ -39,4 +40,5 @@ export default {
   PRODUCT_OPTION_BY_VALUE,
   SHOP_BY_ID,
   PRODUCT_ALL,
+  CATEGORY_BY_ID,
 };

@@ -11,7 +11,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Chip, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import {
   Product,
   ProductItem,
@@ -143,14 +150,56 @@ const ProductDetailPage = () => {
   const productItemTable = useMaterialReactTable({
     data: productDetail?.productItems ?? [],
     columns: productItemColumn,
+    enableExpandAll: true,
     initialState: {
       density: "compact",
     },
+    muiDetailPanelProps: () => ({
+      sx: (theme) => ({
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? "rgba(255,210,244,0.1)"
+            : "rgba(0,0,0,0.1)",
+      }),
+    }),
+    muiExpandButtonProps: ({ row, table }) => ({
+      children: row.getIsExpanded() ? (
+        <Button>App</Button>
+      ) : (
+        <Button>App</Button>
+      ),
+
+      onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+      sx: {
+        transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
+        transition: "transform 0.2s",
+      },
+    }),
     renderTopToolbarCustomActions: () => (
       <Button variant="contained" onClick={toogleCreateProductItemModal}>
         Add New Product Item
       </Button>
     ),
+    renderDetailPanel: ({ row }) =>
+      row.original ? (
+        <Box
+          sx={{
+            display: "grid",
+            margin: "auto",
+            gridTemplateColumns: "1fr 1fr",
+            width: "100%",
+          }}
+        >
+          {row.original.images.map((img) => (
+            <img
+              key={img.id}
+              src={img.url}
+              alt="product"
+              style={{ width: "100%", height: "100%" }}
+            />
+          ))}
+        </Box>
+      ) : null,
   });
 
   const productTagTable = useMaterialReactTable({

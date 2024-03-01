@@ -45,6 +45,7 @@ export const DashBoardPage = () => {
     isLoading,
     isRefetching,
     setQueryParams,
+    fetch,
   } = usePagination<Product>(apiPaths.PRODUCT_ALL);
   const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
@@ -62,10 +63,16 @@ export const DashBoardPage = () => {
   const { mutate } = useMutation({
     mutationKey: [apiPaths.PRODUCT_ALL, "createProduct"],
     mutationFn: (data: ProductForm) => createProduct(data),
+    onSuccess: () => {
+      fetch();
+    },
   });
 
   const { mutate: updateProductById } = useMutation({
     mutationKey: [apiPaths.PRODUCT_ALL, "updateProduct"],
+    onSuccess: () => {
+      fetch();
+    },
     mutationFn: ({
       id,
       data,

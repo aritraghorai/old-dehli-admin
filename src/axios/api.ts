@@ -10,6 +10,7 @@ import {
   ProductTag,
   Shop,
   ShopRequestBody,
+  UpdateProductItemRequestBody,
   UpdateProductRequestBody,
   UpdateShopType,
   User,
@@ -142,4 +143,15 @@ export const ME = async () => {
     user: response.data.data.user as User,
     token: response.data.token as string,
   };
+};
+
+export const updateProductItem = async (
+  productItemId: string,
+  data: UpdateProductItemRequestBody,
+) => {
+  const response = await apiClient.patch(
+    apiPaths.PRODUCT_ITEM_BY_ID(productItemId),
+    data,
+  );
+  return response.data.data;
 };

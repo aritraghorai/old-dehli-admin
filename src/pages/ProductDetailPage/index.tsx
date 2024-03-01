@@ -3,6 +3,7 @@ import {
   createProductItem,
   deleteProductTag,
   getProductByDetail,
+  updateProductItem,
 } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
@@ -24,6 +25,7 @@ import {
   ProductItem,
   ProductItemForm,
   ProductTag,
+  UpdateProductItemRequestBody,
 } from "@/utils/types";
 import {
   MRT_ColumnDef,
@@ -34,6 +36,8 @@ import AddProductTagModal from "@/component/organisms/CreateTagModal";
 import useProductTags from "@/hooks/useProductTag";
 import CreateNewProductItemModal from "@/component/organisms/CreateProductItemModal";
 import { uploadMultipleImages } from "@/utils/function";
+import EditIcon from "@mui/icons-material/Edit";
+import ProductItemUpdateForm from "@/component/organisms/ProductItemUpdateForm";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +54,12 @@ const ProductDetailPage = () => {
     queryKey: [apiPaths.PRODUCT, id],
     queryFn: () => getProductByDetail(id!),
   });
+
+  const [selelectedProductItem, setSelectedProductItem] =
+    useState<ProductItem>();
+
+  const [showProductItemUpdateForm, setShowProductItemUpdateForm] =
+    useState(false);
 
   const { mutate: deleteTag } = useMutation({
     mutationKey: ["deleteProductTag"],
@@ -78,8 +88,22 @@ const ProductDetailPage = () => {
     },
   });
 
+  const { mutate: updateProductItemById } = useMutation({
+    mutationKey: ["createProductItem"],
+    mutationFn: (data: UpdateProductItemRequestBody) =>
+      updateProductItem(selelectedProductItem?.id as string, data),
+    onSuccess: () => {
+      toast.success("Product Item Updated Successfully");
+      refetch();
+    },
+  });
+
   const toogleAddProductTagModal = () => {
     setShowProductTag(!showProductTag);
+  };
+
+  const toogleProductItemUpdateForm = () => {
+    setShowProductItemUpdateForm((val) => !val);
   };
 
   const toogleCreateProductItemModal = () => {
@@ -150,7 +174,9 @@ const ProductDetailPage = () => {
   const productItemTable = useMaterialReactTable({
     data: productDetail?.productItems ?? [],
     columns: productItemColumn,
+    enableRowActions: true,
     enableExpandAll: true,
+    enableEditing: false,
     initialState: {
       density: "compact",
     },
@@ -173,6 +199,18 @@ const ProductDetailPage = () => {
       <Button variant="contained" onClick={toogleCreateProductItemModal}>
         Add New Product Item
       </Button>
+    ),
+    renderRowActions: (props) => (
+      <Stack direction="row" alignItems="center">
+        <IconButton
+          onClick={() => {
+            setSelectedProductItem(props.row.original);
+            toogleProductItemUpdateForm();
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      </Stack>
     ),
     renderDetailPanel: ({ row }) =>
       row.original ? (
@@ -256,6 +294,14 @@ const ProductDetailPage = () => {
             ...data,
             images,
           });
+        }}
+      />
+      <ProductItemUpdateForm
+        open={showProductItemUpdateForm}
+        onClose={toogleProductItemUpdateForm}
+        productItem={selelectedProductItem}
+        onSubmit={(val) => {
+          updateProductItemById(val);
         }}
       />
     </FlowTemplate>

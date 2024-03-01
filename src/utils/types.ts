@@ -244,3 +244,20 @@ export type UpdateProductRequestBody = z.infer<
   typeof UpdateProductRequestBodySchema
 >;
 export type FormType = "Create" | "Update";
+
+export const UpdateProductItemRequestBodySchema = z.object({
+  sku: z.string().min(3).max(20),
+  stock: z.coerce
+    .number()
+    .positive()
+    .transform((val) => +val),
+  price: z.coerce
+    .number()
+    .positive()
+    .transform((val) => +val),
+  optionValues: z.array(z.string().uuid()).optional(),
+});
+
+export type UpdateProductItemRequestBody = z.infer<
+  typeof UpdateProductItemRequestBodySchema
+>;

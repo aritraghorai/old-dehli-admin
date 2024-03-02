@@ -1,4 +1,10 @@
-import { UpdateShop, createShop, getAllShops } from "@/axios/api";
+import {
+  UpdateShop,
+  addShopImage,
+  createShop,
+  deleteShopImageById,
+  getAllShops,
+} from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
 import { Shop, ShopRequestBody, UpdateShopType } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -29,7 +35,39 @@ const useShop = () => {
     },
   });
 
-  return { shops: data, isLoading, isRefetching, addNewShop, UpdateShopbyId };
+  const { mutate: deleteShopImage } = useMutation({
+    mutationKey: [apiPaths.SHOP, "updateShopById"],
+    mutationFn: ({ shopId, images }: { shopId: string; images: string[] }) =>
+      deleteShopImageById(shopId, {
+        images,
+      }),
+    onSuccess: () => {
+      toast.success("Image Deleted Successfully");
+      refetch();
+    },
+  });
+
+  const { mutate: addShopImages } = useMutation({
+    mutationKey: [apiPaths.SHOP, "updateShopById"],
+    mutationFn: ({ shopId, images }: { shopId: string; images: string[] }) =>
+      addShopImage(shopId, {
+        images,
+      }),
+    onSuccess: () => {
+      toast.success("Image Added Successfully");
+      refetch();
+    },
+  });
+
+  return {
+    shops: data,
+    isLoading,
+    isRefetching,
+    addNewShop,
+    UpdateShopbyId,
+    deleteShopImage,
+    addShopImages,
+  };
 };
 
 export default useShop;

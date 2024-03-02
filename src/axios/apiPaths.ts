@@ -22,6 +22,7 @@ const SHOP_BY_ID = (id: string) => `shop/${id}`;
 const PRODUCT_ALL = "product/all";
 const CATEGORY_BY_ID = (id: string) => `category/${id}`;
 const PRODUCT_ITEM_BY_ID = (id: string) => `product/item/${id}`;
+const SHOP_IMAGE_BY_ID = (shopId: string) => `shop/${shopId}/image`;
 
 export default {
   PRODUCT,
@@ -43,4 +44,5 @@ export default {
   PRODUCT_ALL,
   CATEGORY_BY_ID,
   PRODUCT_ITEM_BY_ID,
+  SHOP_IMAGE_BY_ID,
 };

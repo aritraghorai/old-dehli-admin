@@ -32,19 +32,36 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import { ZodError } from "zod";
 import toast from "react-hot-toast";
+import ImageEditorModal from "@/component/organisms/ImageEditorModal";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 export const ShopsPage = () => {
-  const { shops, isLoading, isRefetching, addNewShop, UpdateShopbyId } =
-    useShop();
+  const {
+    shops,
+    isLoading,
+    isRefetching,
+    addNewShop,
+    UpdateShopbyId,
+    deleteShopImage,
+    addShopImages,
+  } = useShop();
 
   const [shopValidationErrors, setShopValidationErrors] = useState<
     UpdateShopRequestBody | undefined
   >();
 
+  const [selectedShop, setSelectedShop] = useState<Shop | undefined>();
+
+  const [imageEditorModalOpen, setImageEditorModalOpen] = useState(false);
+
   const [showCreateShopModal, setShowCreateShopModal] = useState(false);
 
   const toogleCreateShopModal = () => {
     setShowCreateShopModal((prev) => !prev);
+  };
+
+  const toogleImageEditorModal = () => {
+    setImageEditorModalOpen((prev) => !prev);
   };
 
   const handleSaveShop: MRT_TableOptions<Shop>["onEditingRowSave"] = async ({
@@ -155,6 +172,14 @@ export const ShopsPage = () => {
         <IconButton onClick={() => props.table.setEditingRow(props.row)}>
           <EditIcon />
         </IconButton>
+        <IconButton
+          onClick={() => {
+            setSelectedShop(props.row.original);
+            toogleImageEditorModal();
+          }}
+        >
+          <AddPhotoAlternateIcon />
+        </IconButton>
       </Stack>
     ),
     renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
@@ -182,7 +207,7 @@ export const ShopsPage = () => {
         }}
       >
         {row.original.images.map((img) => (
-          <Stack direction="row" gap={2}>
+          <Stack direction="column">
             <img
               key={img.id}
               src={img.url}
@@ -212,6 +237,26 @@ export const ShopsPage = () => {
             ...data,
             images,
           });
+        }}
+      />
+      <ImageEditorModal
+        open={imageEditorModalOpen}
+        onClose={toogleImageEditorModal}
+        images={selectedShop?.images ?? []}
+        submit={async (newImages, deletedImages) => {
+          if (deletedImages.length > 0) {
+            deleteShopImage({
+              shopId: selectedShop?.id as string,
+              images: deletedImages,
+            });
+          }
+          if (newImages.length > 0) {
+            const images = await uploadMultipleImages(newImages);
+            addShopImages({
+              shopId: selectedShop?.id as string,
+              images,
+            });
+          }
         }}
       />
     </FlowTemplate>

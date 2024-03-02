@@ -155,3 +155,24 @@ export const updateProductItem = async (
   );
   return response.data.data;
 };
+
+export const deleteShopImageById = async (
+  shopId: string,
+  data: { images: string[] },
+) => {
+  const response = await apiClient.delete(apiPaths.SHOP_IMAGE_BY_ID(shopId), {
+    data: data,
+  });
+  return response.data.data;
+};
+
+export const addShopImage = async (
+  shopId: string,
+  data: { images: string[] },
+) => {
+  const response = await apiClient.post(
+    apiPaths.SHOP_IMAGE_BY_ID(shopId),
+    data,
+  );
+  return response.data.data;
+};

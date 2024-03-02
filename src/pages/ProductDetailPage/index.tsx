@@ -4,7 +4,6 @@ import {
   createProductItem,
   deleteProductItemImageById,
   deleteProductTag,
-  deleteShopImageById,
   getProductByDetail,
   updateProductItem,
 } from "@/axios/api";

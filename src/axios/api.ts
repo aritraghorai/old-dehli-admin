@@ -176,3 +176,27 @@ export const addShopImage = async (
   );
   return response.data.data;
 };
+
+export const deleteProductItemImageById = async (
+  id: string,
+  data: { images: string[] },
+) => {
+  const response = await apiClient.delete(
+    apiPaths.PRODUCT_ITEM_BY_ID_IMAGE(id),
+    {
+      data: data,
+    },
+  );
+  return response.data.data;
+};
+
+export const addProductItemImageById = async (
+  id: string,
+  data: { images: string[] },
+) => {
+  const response = await apiClient.post(
+    apiPaths.PRODUCT_ITEM_BY_ID_IMAGE(id),
+    data,
+  );
+  return response.data.data;
+};

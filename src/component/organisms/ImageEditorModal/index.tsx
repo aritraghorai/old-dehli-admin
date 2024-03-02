@@ -27,8 +27,8 @@ const ImageEditorModal: React.FC<AddProductTagModalProps> = ({
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [deletedImages, setDeletedImages] = useState<string[]>([]);
   const handleSubmitAndClose = () => {
-    submit(imageFiles, deletedImages);
     setImageFiles([]);
+    submit(imageFiles, deletedImages);
     onClose();
   };
 

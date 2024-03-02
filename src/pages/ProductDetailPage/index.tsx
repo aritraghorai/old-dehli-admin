@@ -1,7 +1,10 @@
 import {
+  addProductItemImageById,
   addProductTag,
   createProductItem,
+  deleteProductItemImageById,
   deleteProductTag,
+  deleteShopImageById,
   getProductByDetail,
   updateProductItem,
 } from "@/axios/api";
@@ -38,12 +41,17 @@ import CreateNewProductItemModal from "@/component/organisms/CreateProductItemMo
 import { uploadMultipleImages } from "@/utils/function";
 import EditIcon from "@mui/icons-material/Edit";
 import ProductItemUpdateForm from "@/component/organisms/ProductItemUpdateForm";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import ImageEditorModal from "@/component/organisms/ImageEditorModal";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [showProductTag, setShowProductTag] = useState(false);
   const [showCreateProductItemValue, setShowCreateProductItem] =
     useState(false);
+
+  const [imageEditorModalOpen, setImageEditorModalOpen] = useState(false);
+
   const { productTags } = useProductTags();
   const navigate = useNavigate();
   const {
@@ -79,6 +87,10 @@ const ProductDetailPage = () => {
     },
   });
 
+  const toogleImageEditorModal = () => {
+    setImageEditorModalOpen((prev) => !prev);
+  };
+
   const { mutate: addProductItem } = useMutation({
     mutationKey: ["createProductItem"],
     mutationFn: (data: ProductItemForm) => createProductItem(id!, data),
@@ -94,6 +106,30 @@ const ProductDetailPage = () => {
       updateProductItem(selelectedProductItem?.id as string, data),
     onSuccess: () => {
       toast.success("Product Item Updated Successfully");
+      refetch();
+    },
+  });
+
+  const { mutate: deleteProductItemImage } = useMutation({
+    mutationKey: [apiPaths.PRODUCT_ITEM, "deletePorductItemImage"],
+    mutationFn: ({ id, images }: { id: string; images: string[] }) =>
+      deleteProductItemImageById(id, {
+        images,
+      }),
+    onSuccess: () => {
+      toast.success("Image Deleted Successfully");
+      refetch();
+    },
+  });
+
+  const { mutate: addProductItemImage } = useMutation({
+    mutationKey: [apiPaths.PRODUCT_ITEM, "addProductItemImage"],
+    mutationFn: ({ id, images }: { id: string; images: string[] }) =>
+      addProductItemImageById(id, {
+        images,
+      }),
+    onSuccess: () => {
+      toast.success("Image Added Successfully");
       refetch();
     },
   });
@@ -210,6 +246,14 @@ const ProductDetailPage = () => {
         >
           <EditIcon />
         </IconButton>
+        <IconButton
+          onClick={() => {
+            setSelectedProductItem(props.row.original);
+            toogleImageEditorModal();
+          }}
+        >
+          <AddPhotoAlternateIcon />
+        </IconButton>
       </Stack>
     ),
     renderDetailPanel: ({ row }) =>
@@ -302,6 +346,26 @@ const ProductDetailPage = () => {
         productItem={selelectedProductItem}
         onSubmit={(val) => {
           updateProductItemById(val);
+        }}
+      />
+      <ImageEditorModal
+        open={imageEditorModalOpen}
+        onClose={toogleImageEditorModal}
+        images={selelectedProductItem?.images ?? []}
+        submit={async (newImages, deletedImages) => {
+          if (deletedImages.length > 0) {
+            deleteProductItemImage({
+              id: selelectedProductItem?.id as string,
+              images: deletedImages,
+            });
+          }
+          if (newImages.length > 0) {
+            const images = await uploadMultipleImages(newImages);
+            addProductItemImage({
+              id: selelectedProductItem?.id as string,
+              images,
+            });
+          }
         }}
       />
     </FlowTemplate>

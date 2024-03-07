@@ -5,7 +5,6 @@ import {
   createBrowserRouter,
   useLocation,
 } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import DashBoardPage from "./pages/DashBoardPage";
 import LoginPage from "./pages/Login";
 import { ThemeProvider } from "@mui/material";
@@ -19,6 +18,11 @@ import { Suspense, lazy, useEffect } from "react";
 import ShopsPage from "./pages/ShopsPage";
 import ProductOptionPage from "./pages/ConfigPage";
 import ProductTagPage from "./pages/ProductTagPages";
+import UsersPage from "./pages/UserPage";
+import { ROLES, TOKEN, USER } from "./utils/constant";
+import { User } from "./utils/types";
+import toast from "react-hot-toast";
+import OrderPage from "./pages/OrderPage";
 
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
@@ -75,6 +79,14 @@ export const router = createBrowserRouter([
         element: <ProductTagPage />,
       },
       {
+        path: "users",
+        element: <UsersPage />,
+      },
+      {
+        path: "orders",
+        element: <OrderPage />,
+      },
+      {
         path: "",
         element: <Navigate to="/dashboard" />,
       },
@@ -103,19 +115,38 @@ export const router = createBrowserRouter([
 const App = () => {
   const set = useSetRecoilState(authAtom);
 
-  const { data } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ["auth"],
     queryFn: ME,
     retry: false,
   });
   useEffect(() => {
     if (data) {
-      set({ isAuthenticated: true, user: data.user, token: data.token });
+      if (
+        data.user.role.some(
+          (r) => r.name === ROLES.ADMIN || r.name === ROLES.SUPER_ADMIN,
+        )
+      ) {
+        set({ isAuthenticated: true, user: data.user, token: data.token });
+        localStorage.setItem(TOKEN, data.token);
+        localStorage.setItem(USER, JSON.stringify(data.user as User));
+      } else {
+        toast.error("You are not authorized to access this page");
+        set({ isAuthenticated: false, user: null, token: null });
+        localStorage.clear();
+      }
     }
   }, [data, set]);
+
+  useEffect(() => {
+    if (error) {
+      set({ isAuthenticated: false, user: null, token: null });
+      localStorage.clear();
+    }
+  }, [error, set]);
+
   return (
     <ThemeProvider theme={theme}>
-      <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={router} />
     </ThemeProvider>
   );

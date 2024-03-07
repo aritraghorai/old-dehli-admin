@@ -10,6 +10,7 @@ import {
   ProductTag,
   Shop,
   ShopRequestBody,
+  UpdateOrderRequestBody,
   UpdateProductItemRequestBody,
   UpdateProductRequestBody,
   UpdateShopType,
@@ -198,5 +199,20 @@ export const addProductItemImageById = async (
     apiPaths.PRODUCT_ITEM_BY_ID_IMAGE(id),
     data,
   );
+  return response.data.data;
+};
+
+export const getAllOrders = async () => {
+  const response = await apiClient.get(apiPaths.ORDER_ALL);
+  return response.data.data;
+};
+
+export const getAllUsers = async () => {
+  const response = await apiClient.get(apiPaths.USER);
+  return response.data.data as User[];
+};
+
+export const updateOrder = async (id: string, data: UpdateOrderRequestBody) => {
+  const response = await apiClient.patch(apiPaths.ORDER_BY_ID(id), data);
   return response.data.data;
 };

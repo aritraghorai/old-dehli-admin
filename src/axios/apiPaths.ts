@@ -24,6 +24,9 @@ const CATEGORY_BY_ID = (id: string) => `category/${id}`;
 const PRODUCT_ITEM_BY_ID = (id: string) => `product/item/${id}`;
 const SHOP_IMAGE_BY_ID = (shopId: string) => `shop/${shopId}/image`;
 const PRODUCT_ITEM_BY_ID_IMAGE = (id: string) => `product/item/${id}/image`;
+const ORDER_ALL = "order/all";
+const USER = "user";
+const ORDER_BY_ID = (id: string) => `order/${id}`;
 
 export default {
   PRODUCT,
@@ -47,4 +50,7 @@ export default {
   PRODUCT_ITEM_BY_ID,
   SHOP_IMAGE_BY_ID,
   PRODUCT_ITEM_BY_ID_IMAGE,
+  ORDER_ALL,
+  USER,
+  ORDER_BY_ID,
 };

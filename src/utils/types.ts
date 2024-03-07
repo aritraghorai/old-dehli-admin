@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import { ORDER_STATUS_ENUM, PAYMENT_GATEWAY, PAYMENT_STATUS } from "./constant";
 export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
@@ -14,8 +14,17 @@ export type User = {
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
-  role: Array<string>;
+  role: Array<Role>;
 };
+
+interface Role {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  isVerified: boolean;
+}
 
 export type TypographyVarient =
   | "heading1"
@@ -82,6 +91,7 @@ export type ProductItem = {
   images: Array<Image>;
   createdAt: string;
   updatedAt: string;
+  product: Product;
 };
 
 export type Product = {
@@ -261,3 +271,64 @@ export const UpdateProductItemRequestBodySchema = z.object({
 export type UpdateProductItemRequestBody = z.infer<
   typeof UpdateProductItemRequestBodySchema
 >;
+
+export type UserAddress = {
+  id: string;
+  name: string;
+  mobile: string;
+  alternatePhone: string;
+  pincode: string;
+  locality: string;
+  address: string;
+  city: string;
+  landmark: string;
+  state: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Order = {
+  id: string;
+  discount: number;
+  grandTotal: number;
+  orderItems: Array<{
+    id: string;
+    productItem: ProductItem;
+    quantity: number;
+    price: number;
+  }>;
+  status: keyof typeof ORDER_STATUS_ENUM;
+  paymentId?: string;
+  paymentGateway: keyof typeof PAYMENT_GATEWAY;
+  paymentStatus: keyof typeof PAYMENT_STATUS;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const UpdateOrderFormSchema = z.object({
+  status: z
+    .enum(
+      [
+        ORDER_STATUS_ENUM.SHIPPED,
+        ORDER_STATUS_ENUM.DELIVERED,
+        ORDER_STATUS_ENUM.CANCELLED,
+        ORDER_STATUS_ENUM.PROCESSING,
+      ],
+      {
+        errorMap: () => ({
+          message:
+            "Status must be one of these: Shipped, Delivered, Cancelled, Processing",
+        }),
+      },
+    )
+    .optional(),
+  paymentStatus: z
+    .enum([PAYMENT_STATUS.SUCCESS, PAYMENT_STATUS.PENDING], {
+      errorMap: () => ({
+        message: "Payment Status must be one of these: Success, Pending",
+      }),
+    })
+    .optional(),
+});
+
+export type UpdateOrderRequestBody = z.infer<typeof UpdateOrderFormSchema>;

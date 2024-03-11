@@ -37,6 +37,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCategory from "@/hooks/useCategory";
+import toast from "react-hot-toast";
 
 export const DashBoardPage = () => {
   const {
@@ -82,6 +83,9 @@ export const DashBoardPage = () => {
       id: string;
       data: UpdateProductRequestBody;
     }) => updateProduct(id, data),
+    onSettled: () => {
+      toast.success("Product Updated Successfully");
+    },
   });
 
   const handleGlobalFilterChange = (filter: string) => {

@@ -142,7 +142,7 @@ export const DashBoardPage = () => {
         },
       },
       {
-        accessorFn: (row) => row.category.name,
+        accessorFn: (row) => row.category.slug,
         header: "Category",
         enableEditing: true,
         editVariant: "select",
@@ -158,7 +158,7 @@ export const DashBoardPage = () => {
         }),
         editSelectOptions:
           categories?.map((category) => ({
-            label: category.name,
+            label: category.slug,
             value: category.id,
           })) ?? [],
       },

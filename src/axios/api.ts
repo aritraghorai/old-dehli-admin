@@ -20,7 +20,7 @@ import apiClient from "./apiClient";
 import apiPaths from "./apiPaths";
 
 export const getAllCategories = async () => {
-  const response = await apiClient.get(apiPaths.CATEGORY_ALL);
+  const response = await apiClient.get(apiPaths.CATEGORY);
   return response.data.data as Category[];
 };
 export const getAllCategoriesAll = async () => {

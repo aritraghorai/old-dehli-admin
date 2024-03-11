@@ -109,6 +109,8 @@ export const CategoryPage = () => {
       showProgressBars: isRefetching,
     },
     enableRowActions: true,
+    getSubRows: (row) => row.subCategories ?? [],
+    enableExpanding: true,
     renderTopToolbarCustomActions: () => (
       <Button variant="contained" onClick={toggleShowCreateCategoryModal}>
         Create New Category

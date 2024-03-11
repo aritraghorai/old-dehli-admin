@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useCategory = () => {
   const { data, isLoading, isRefetching } = useQuery<Category[]>({
-    queryKey: [apiPaths.CATEGORY],
+    queryKey: [apiPaths.CATEGORY_ALL],
     queryFn: getAllCategoriesAll,
   });
   return { data, isLoading, isRefetching };

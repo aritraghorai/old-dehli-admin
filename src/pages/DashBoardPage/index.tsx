@@ -36,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useCategory from "@/hooks/useCategory";
 
 export const DashBoardPage = () => {
   const {
@@ -49,6 +50,7 @@ export const DashBoardPage = () => {
   } = usePagination<Product>(apiPaths.PRODUCT_ALL);
   const [globalFilter, setGlobalFilter] = useState("");
   const navigate = useNavigate();
+  const { data: categories } = useCategory();
 
   const {
     setValue,
@@ -136,12 +138,28 @@ export const DashBoardPage = () => {
         },
       },
       {
-        accessorKey: "category.name",
+        accessorFn: (row) => row.category.name,
         header: "Category",
-        enableEditing: false,
+        enableEditing: true,
+        editVariant: "select",
+        muiEditTextFieldProps: (row) => ({
+          required: true,
+          value: getValues("categoryId") ?? row.row.original.category.id,
+          name: "categoryId",
+          onChange: (e) => {
+            setValue("categoryId", e.target.value, {
+              shouldValidate: true,
+            });
+          },
+        }),
+        editSelectOptions:
+          categories?.map((category) => ({
+            label: category.name,
+            value: category.id,
+          })) ?? [],
       },
     ],
-    [errors],
+    [errors, categories, setValue, getValues],
     //end
   );
 
@@ -151,15 +169,18 @@ export const DashBoardPage = () => {
 
   const handleSaveProduct: MRT_TableOptions<Product>["onEditingRowSave"] =
     async ({ values, table }) => {
-      console.log("values", values);
       Object.keys(values).forEach((key) => {
         if (key === "name" || key === "slug" || key === "price") {
           setValue(key as keyof UpdateProductRequestBody, values[key], {
             shouldValidate: true,
           });
         }
+        if (key === "Category") {
+          setValue("categoryId", values[key], {
+            shouldValidate: true,
+          });
+        }
       });
-      console.log("values", values);
       if (isValid) {
         updateProductById({
           id: values.id,

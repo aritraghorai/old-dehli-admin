@@ -247,6 +247,7 @@ export const UpdateProductRequestBodySchema = z.object({
   description: z.string().min(3).max(255).optional(),
   slug: z.string().min(3).max(255).optional(),
   price: z.number().positive().optional(),
+  categoryId: z.string().uuid().optional(),
   isActive: z.boolean().optional(),
 });
 

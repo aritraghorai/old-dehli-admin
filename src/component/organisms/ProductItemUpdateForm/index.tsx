@@ -96,6 +96,9 @@ const ProductItemUpdateForm: React.FC<ProductItemUpdateFormProps> = ({
       setValue("price", +productItem.price, {
         shouldValidate: true,
       });
+      setValue("weight", +productItem.weight, {
+        shouldValidate: true,
+      });
       setOptions(() =>
         productItem.productConfig.map((val) => ({
           option: val.optionValue.option,
@@ -129,6 +132,13 @@ const ProductItemUpdateForm: React.FC<ProductItemUpdateFormProps> = ({
             error={!!errors.stock?.message}
             helperText={errors.stock?.message}
             {...register("stock")}
+          />
+          <TextField
+            label="Weight"
+            variant="outlined"
+            error={!!errors.weight?.message}
+            helperText={errors.weight?.message}
+            {...register("weight")}
           />
           <TextField
             label="Price"

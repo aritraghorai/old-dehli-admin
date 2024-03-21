@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductForm, productFormSchema } from "@/utils/types";
+import useProductType from "@/hooks/useProductType";
+import useTimeSlots from "@/hooks/useTimeSlot";
 
 interface CreateNewProductModalProps extends Omit<DialogProps, "onSubmit"> {
   onSubmit: (data: ProductForm) => void;
@@ -29,6 +31,8 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
   const { data = [] } = useCategory();
   const { shops = [] } = useShop();
   const { productTags = [] } = useProductTags();
+  const { productTypes = [] } = useProductType();
+  const { timeSlots = [] } = useTimeSlots();
 
   const {
     register,
@@ -127,6 +131,47 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
               />
             )}
           />
+          <Autocomplete
+            id="tags-standard"
+            options={productTypes}
+            getOptionLabel={(data) => data.name}
+            onChange={(_, value) =>
+              setValue("productType", value?.id as string, {
+                shouldValidate: true,
+              })
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Product Type"
+                placeholder="Select Product Type"
+                error={!!errors.productType?.message}
+                helperText={errors.productType?.message}
+              />
+            )}
+          />
+          <Autocomplete
+            id="tags-standard"
+            options={timeSlots}
+            getOptionLabel={(data) => data.slot}
+            onChange={(_, value) =>
+              setValue("timeSlot", value?.id as string, {
+                shouldValidate: true,
+              })
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Time Slot"
+                placeholder="Select Time Slot"
+                error={!!errors.timeSlot?.message}
+                helperText={errors.timeSlot?.message}
+              />
+            )}
+          />
+
           <Autocomplete
             id="tags-standard"
             multiple

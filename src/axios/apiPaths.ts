@@ -27,6 +27,14 @@ const PRODUCT_ITEM_BY_ID_IMAGE = (id: string) => `product/item/${id}/image`;
 const ORDER_ALL = "order/all";
 const USER = "user";
 const ORDER_BY_ID = (id: string) => `order/${id}`;
+const PIN_CODE = "pin-code";
+const GET_PIN_CODE = (pinCode: string) => `pin-code/${pinCode}`;
+const ZONE = "zones";
+const ZONE_BY_ID = (id: string) => `zones/${id}`;
+const PRODUCT_TYPE = "product-type";
+const PRODUCT_TYPE_BY_ID = (id: string) => `${PRODUCT_TYPE}/${id}`;
+const TIME_SLOTS = "timeslot";
+const TIME_SLOT_BY_ID = (id: string) => `${TIME_SLOTS}/${id}`;
 
 export default {
   PRODUCT,
@@ -53,4 +61,12 @@ export default {
   ORDER_ALL,
   USER,
   ORDER_BY_ID,
+  PIN_CODE,
+  ZONE,
+  GET_PIN_CODE,
+  ZONE_BY_ID,
+  PRODUCT_TYPE,
+  PRODUCT_TYPE_BY_ID,
+  TIME_SHOTS: TIME_SLOTS,
+  TIME_SHOT_BY_ID: TIME_SLOT_BY_ID,
 };

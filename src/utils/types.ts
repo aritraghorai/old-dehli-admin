@@ -92,6 +92,7 @@ export type ProductItem = {
   createdAt: string;
   updatedAt: string;
   product: Product;
+  weight: number;
 };
 
 export type Product = {
@@ -104,6 +105,8 @@ export type Product = {
   price: number;
   productTag: Array<ProductTag>;
   productItems: Array<ProductItem>;
+  type: ProductType;
+  timeSlot?: TimeSlot;
   category: Category;
   createdAt: string;
   updatedAt: string;
@@ -137,6 +140,8 @@ export const productFormSchema = z.object({
   categoryId: z.string().uuid(),
   shopId: z.string().uuid(),
   price: z.coerce.number().positive(),
+  productType: z.string().uuid(),
+  timeSlot: z.string().uuid(),
 });
 export type ProductForm = z.infer<typeof productFormSchema>;
 
@@ -249,6 +254,8 @@ export const UpdateProductRequestBodySchema = z.object({
   price: z.number().positive().optional(),
   categoryId: z.string().uuid().optional(),
   isActive: z.boolean().optional(),
+  productType: z.string().uuid().optional(),
+  timeSlot: z.string().uuid().optional(),
 });
 
 export type UpdateProductRequestBody = z.infer<
@@ -267,6 +274,7 @@ export const UpdateProductItemRequestBodySchema = z.object({
     .positive()
     .transform((val) => +val),
   optionValues: z.array(z.string().uuid()).optional(),
+  weight: z.coerce.number().positive()
 });
 
 export type UpdateProductItemRequestBody = z.infer<
@@ -333,3 +341,92 @@ export const UpdateOrderFormSchema = z.object({
 });
 
 export type UpdateOrderRequestBody = z.infer<typeof UpdateOrderFormSchema>;
+
+export type Pincode = {
+  id: string;
+  pincode: string;
+  postOffices: PostOffice[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PostOffice = {
+  id: string;
+  name: string;
+  circle: string;
+  district: string;
+  division: string;
+  region: string;
+  block: string;
+  state: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const ZoneFormSchema = z.object({
+  name: z.string().min(3).max(50),
+  deliveryCharges: z.coerce.number().min(0),
+  pincodes: z.array(z.string().uuid()).optional(),
+  products: z.array(z.string().uuid()).optional(),
+});
+
+export type ZoneForm = z.infer<typeof ZoneFormSchema>;
+
+export type Zone = {
+  id: string;
+  name: string;
+  deliveryCharges: number;
+  pincodes: Array<Pincode>;
+  products: Array<Product>;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const ProductTypeFormSchema = z.object({
+  name: z.string().min(3).max(255),
+  description: z.string().min(3).max(255).optional(),
+  image: z.any().refine((file) => {
+    if (file instanceof File) {
+      return file.size < 5 * 1024 * 1024;
+    }
+    return false;
+  }, "File size is over 5MB"),
+});
+
+export const UpdateProductTypeBodySchema = z.object({
+  name: z.string().min(3).max(255).optional(),
+  description: z.string().min(3).max(255).optional(),
+  image: z.string().uuid().optional(),
+});
+
+export type UpdateProductTypeBody = z.infer<typeof UpdateProductTypeBodySchema>;
+
+export type ProductTypeForm = z.infer<typeof ProductTypeFormSchema>;
+
+export type ProductTypeRequestBody = Omit<ProductTypeForm, "image"> & {
+  image: string;
+};
+export type ProductType = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  image: Image;
+  createdAt: string;
+  updatedAt: string;
+};
+export const TimeSlotRequestFormSchema = z.object({
+  startTime: z.coerce.date(),
+  endTime: z.coerce.date(),
+});
+
+export type TimeSlotRequestForm = z.infer<typeof TimeSlotRequestFormSchema>;
+
+export type TimeSlot = {
+  id: string;
+  slot: string;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
+}

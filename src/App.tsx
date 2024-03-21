@@ -23,6 +23,10 @@ import { ROLES, TOKEN, USER } from "./utils/constant";
 import { User } from "./utils/types";
 import toast from "react-hot-toast";
 import OrderPage from "./pages/OrderPage";
+import PinCodePage from "./pages/PincodePage";
+import ZonesPage from "./pages/ZonesPage";
+import ProductTypePage from "./pages/ProductTypePage";
+import TimeSlotPage from "./pages/TimeSlotPage";
 
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
@@ -85,6 +89,22 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         element: <OrderPage />,
+      },
+      {
+        path: "pin-codes",
+        element: <PinCodePage />,
+      },
+      {
+        path: "zones",
+        element: <ZonesPage />,
+      },
+      {
+        path: "time-slots",
+        element: <TimeSlotPage />,
+      },
+      {
+        path: "product-type",
+        element: <ProductTypePage />,
       },
       {
         path: "",

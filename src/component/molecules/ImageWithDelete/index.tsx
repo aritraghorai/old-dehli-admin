@@ -8,6 +8,7 @@ interface ImageWithDeleteProps {
   isDelete: boolean;
   onDelete: () => void;
   onAdd: () => void;
+  isEditable?: boolean;
 }
 
 const ImageWithDelete = ({
@@ -16,23 +17,26 @@ const ImageWithDelete = ({
   isDelete,
   onDelete,
   onAdd,
+  isEditable = true,
 }: ImageWithDeleteProps) => {
   return (
     <Box position="relative">
-      <IconButton
-        sx={{
-          position: "absolute",
-          left: "-20px",
-          top: "-20px",
-        }}
-        onClick={isDelete ? onAdd : onDelete}
-      >
-        {!isDelete ? (
-          <DeleteIcon color="info" />
-        ) : (
-          <AddCircleOutlineIcon color="info" />
-        )}
-      </IconButton>
+      {isEditable && (
+        <IconButton
+          sx={{
+            position: "absolute",
+            left: "-20px",
+            top: "-20px",
+          }}
+          onClick={isDelete ? onAdd : onDelete}
+        >
+          {!isDelete ? (
+            <DeleteIcon color="info" />
+          ) : (
+            <AddCircleOutlineIcon color="info" />
+          )}
+        </IconButton>
+      )}
       <img
         src={src}
         alt={alt}

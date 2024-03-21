@@ -20,7 +20,6 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import apiPaths from "@/axios/apiPaths";
-import usePagination from "@/hooks/usePagination";
 import {
   Product,
   ProductForm,
@@ -38,20 +37,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCategory from "@/hooks/useCategory";
 import toast from "react-hot-toast";
+import useProducts from "@/hooks/useProducts";
+import useProductType from "@/hooks/useProductType";
+import useTimeSlots from "@/hooks/useTimeSlot";
 
 export const DashBoardPage = () => {
-  const {
-    data,
-    pagination,
-    setPagination,
-    isLoading,
-    isRefetching,
-    setQueryParams,
-    fetch,
-  } = usePagination<Product>(apiPaths.PRODUCT_ALL);
-  const [globalFilter, setGlobalFilter] = useState("");
+  const { products, isRefetching, isLoading, refetch: fetch } = useProducts();
   const navigate = useNavigate();
   const { data: categories } = useCategory();
+  const { productTypes } = useProductType();
+  const { timeSlots = [] } = useTimeSlots();
 
   const {
     setValue,
@@ -88,13 +83,6 @@ export const DashBoardPage = () => {
     },
   });
 
-  const handleGlobalFilterChange = (filter: string) => {
-    setGlobalFilter(filter);
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-    if (filter && filter !== "")
-      setQueryParams([{ key: "search", value: filter }]);
-  };
-
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
 
   const toogleCreateProductModal = () => {
@@ -112,6 +100,7 @@ export const DashBoardPage = () => {
       {
         accessorKey: "name",
         header: "Name",
+        enableFilterMatchHighlighting: true,
         muiEditTextFieldProps: {
           error: !!errors.name?.message,
           helperText: errors.name?.message,
@@ -148,9 +137,11 @@ export const DashBoardPage = () => {
         editVariant: "select",
         muiEditTextFieldProps: (row) => ({
           required: true,
-          value: getValues("categoryId") ?? row.row.original.category.id,
+          value:
+            getValues("categoryId") ?? row.row.original.category.id ?? null,
           name: "categoryId",
           onChange: (e) => {
+            console.log(e.target.value);
             setValue("categoryId", e.target.value, {
               shouldValidate: true,
             });
@@ -162,8 +153,50 @@ export const DashBoardPage = () => {
             value: category.id,
           })) ?? [],
       },
+      {
+        accessorFn: (row) => row.type.slug,
+        header: "Product Type",
+        enableEditing: true,
+        editVariant: "select",
+        muiEditTextFieldProps: (row) => ({
+          required: true,
+          value: getValues("productType") ?? row.row.original.type.id,
+          name: "productType",
+          onChange: (e) => {
+            setValue("productType", e.target.value, {
+              shouldValidate: true,
+            });
+          },
+        }),
+        editSelectOptions:
+          productTypes?.map((type) => ({
+            label: type.slug,
+            value: type.id,
+          })) ?? [],
+      },
+      {
+        accessorFn: (row) => row.timeSlot?.slot,
+        header: "Time Slot",
+        enableEditing: true,
+        editVariant: "select",
+        muiEditTextFieldProps: (row) => ({
+          required: true,
+          value: getValues("timeSlot") ?? row.row.original.timeSlot?.id ?? null,
+          name: "timeSlot",
+          onChange: (e) => {
+            setValue("timeSlot", e.target.value, {
+              shouldValidate: true,
+            });
+          },
+        }),
+        editSelectOptions:
+          timeSlots?.map((slot) => ({
+            label: slot.slot,
+            value: slot.id,
+          })) ?? [],
+      },
     ],
-    [errors, categories, setValue, getValues],
+    [errors, categories, setValue, getValues, productTypes, timeSlots],
     //end
   );
 
@@ -176,11 +209,6 @@ export const DashBoardPage = () => {
       Object.keys(values).forEach((key) => {
         if (key === "name" || key === "slug" || key === "price") {
           setValue(key as keyof UpdateProductRequestBody, values[key], {
-            shouldValidate: true,
-          });
-        }
-        if (key === "Category") {
-          setValue("categoryId", values[key], {
             shouldValidate: true,
           });
         }
@@ -198,37 +226,27 @@ export const DashBoardPage = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: data?.data ?? [],
+    data: products ?? [],
     enablePagination: true,
     enableColumnFilters: false,
     enableSorting: false,
     enableRowSelection: false,
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
-    manualPagination: true,
-    onPaginationChange: setPagination,
     enableEditing: true,
     editDisplayMode: "modal",
-    rowCount: pagination.pageSize,
     enableGlobalFilter: true,
-    manualFiltering: true,
     enableRowActions: true,
     onEditingRowCancel: () => reset(),
     onEditingRowSave: handleSaveProduct,
-    muiPaginationProps: {
-      count: data?.totalPage ?? 0,
-    },
     initialState: {
       density: "compact",
     },
     state: {
       isLoading,
-      pagination,
       showProgressBars: isRefetching,
-      globalFilter: globalFilter,
     },
     enableTableHead: true,
-    onGlobalFilterChange: handleGlobalFilterChange,
     renderTopToolbarCustomActions: () => (
       <Button variant="contained" onClick={toogleCreateProductModal}>
         Create New Product

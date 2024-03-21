@@ -100,7 +100,7 @@ const ProductDetailPage = () => {
   });
 
   const { mutate: updateProductItemById } = useMutation({
-    mutationKey: ["createProductItem"],
+    mutationKey: ["updateProduct"],
     mutationFn: (data: UpdateProductItemRequestBody) =>
       updateProductItem(selelectedProductItem?.id as string, data),
     onSuccess: () => {
@@ -162,6 +162,10 @@ const ProductDetailPage = () => {
       {
         accessorKey: "stock",
         header: "Stock",
+      },
+      {
+        accessorKey: "weight",
+        header: "Weight(Gram)",
       },
       {
         accessorFn: (row) => new Date(row.createdAt).toLocaleString(),

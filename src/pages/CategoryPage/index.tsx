@@ -26,7 +26,7 @@ export const CategoryPage = () => {
       name: slectedCategory?.name as string,
       slug: slectedCategory?.slug as string,
       description: slectedCategory?.description as string,
-      parent: slectedCategory?.parent?.id as string,
+      parentCategoryId: slectedCategory?.parent?.id as string,
     }),
     [slectedCategory],
   );
@@ -53,7 +53,9 @@ export const CategoryPage = () => {
     mutationFn: (data: CategoryForm) =>
       updateCategory(slectedCategory?.id as string, data),
     onSuccess: () => {
-      toast.success("Category created successfully");
+      toast.success("Category updated successfully");
+      setFormType("Create");
+      setSelectedCategory(undefined);
       refetch();
     },
   });
@@ -112,7 +114,14 @@ export const CategoryPage = () => {
     getSubRows: (row) => row.subCategories ?? [],
     enableExpanding: true,
     renderTopToolbarCustomActions: () => (
-      <Button variant="contained" onClick={toggleShowCreateCategoryModal}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setFormType("Create");
+          setSelectedCategory(undefined);
+          toggleShowCreateCategoryModal();
+        }}
+      >
         Create New Category
       </Button>
     ),
@@ -121,7 +130,7 @@ export const CategoryPage = () => {
         <IconButton
           onClick={() => {
             setFormType("Update");
-            setSelectedCategory(props.row.original);
+            setSelectedCategory(() => props.row.original);
             toggleShowCreateCategoryModal();
           }}
         >

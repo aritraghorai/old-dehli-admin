@@ -22,6 +22,10 @@ export const navItems = [
   { id: 5, label: "Product Tag", iconSrc: HomeIcon, path: "/product-tag" },
   { id: 6, label: "Users", iconSrc: HomeIcon, path: "/users" },
   { id: 7, label: "Orders", iconSrc: HomeIcon, path: "/orders" },
+  { id: 8, label: "Pin Codes", iconSrc: HomeIcon, path: "/pin-codes" },
+  { id: 9, label: "Zones", iconSrc: HomeIcon, path: "/zones" },
+  { id: 10, label: "Product Type", iconSrc: HomeIcon, path: "/product-type" },
+  { id: 11, label: "Time Slots", iconSrc: HomeIcon, path: "/time-slots" },
 ];
 
 const SideNavBar = () => {

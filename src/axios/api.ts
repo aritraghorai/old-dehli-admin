@@ -4,17 +4,22 @@ import {
   Image,
   LoginFormBody,
   NewProductTagForm,
+  Pincode,
   ProductForm,
   ProductItemRequestBody,
   ProductOptionForm,
   ProductTag,
+  ProductTypeRequestBody,
   Shop,
   ShopRequestBody,
+  TimeSlotRequestForm,
   UpdateOrderRequestBody,
   UpdateProductItemRequestBody,
   UpdateProductRequestBody,
+  UpdateProductTypeBody,
   UpdateShopType,
   User,
+  ZoneForm,
 } from "@/utils/types";
 import apiClient from "./apiClient";
 import apiPaths from "./apiPaths";
@@ -214,5 +219,68 @@ export const getAllUsers = async () => {
 
 export const updateOrder = async (id: string, data: UpdateOrderRequestBody) => {
   const response = await apiClient.patch(apiPaths.ORDER_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const getAllPinCodes = async () => {
+  const response = await apiClient.get(apiPaths.PIN_CODE);
+  return response.data.data as Pincode[];
+};
+export const getAllZones = async () => {
+  const response = await apiClient.get(apiPaths.ZONE);
+  return response.data.data;
+};
+export const getPinCode = async (pinCode: string) => {
+  const response = await apiClient.get(apiPaths.GET_PIN_CODE(pinCode));
+  return response.data.data;
+};
+
+export const getAllProducts = async () => {
+  const response = await apiClient.get(apiPaths.PRODUCT_ALL);
+  return response.data.data;
+};
+
+export const createNewZone = async (data: ZoneForm) => {
+  const response = await apiClient.post(apiPaths.ZONE, data);
+  return response.data.data;
+};
+
+export const updateZoneById = async (id: string, data: ZoneForm) => {
+  const response = await apiClient.put(apiPaths.ZONE_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const getAllProductTypes = async () => {
+  const response = await apiClient.get(apiPaths.PRODUCT_TYPE);
+  return response.data.data;
+};
+export const createProductType = async (data: ProductTypeRequestBody) => {
+  const response = await apiClient.post(apiPaths.PRODUCT_TYPE, data);
+  return response.data.data;
+};
+
+export const updateProductTypeById = async (
+  id: string,
+  data: UpdateProductTypeBody,
+) => {
+  const response = await apiClient.patch(apiPaths.PRODUCT_TYPE_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const getAllTimeShots = async () => {
+  const response = await apiClient.get(apiPaths.TIME_SHOTS);
+  return response.data.data;
+};
+
+export const createTimeSlot = async (data: TimeSlotRequestForm) => {
+  const response = await apiClient.post(apiPaths.TIME_SHOTS, data);
+  return response.data.data;
+};
+
+export const updateTimeSlotById = async (
+  id: string,
+  data: TimeSlotRequestForm,
+) => {
+  const response = await apiClient.patch(apiPaths.TIME_SHOT_BY_ID(id), data);
   return response.data.data;
 };

@@ -16,12 +16,16 @@ interface AddProductTagModalProps extends Omit<DialogProps, "onSubmit"> {
   onClose: () => void;
   images: Image[];
   submit: (newImages: File[], deletedImages: string[]) => void;
+  multiple?: boolean;
+  isEditable?: boolean;
 }
 
 const ImageEditorModal: React.FC<AddProductTagModalProps> = ({
   onClose,
   images,
   submit,
+  multiple = true,
+  isEditable = true,
   ...props
 }) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -45,6 +49,7 @@ const ImageEditorModal: React.FC<AddProductTagModalProps> = ({
           <Stack>
             {images.map((image, index) => (
               <ImageWithDelete
+                isEditable={isEditable}
                 key={index}
                 src={image.url}
                 alt={image.id}
@@ -58,7 +63,10 @@ const ImageEditorModal: React.FC<AddProductTagModalProps> = ({
               />
             ))}
           </Stack>
-          <Dropzone onChange={(file) => setImageFiles(file)} />
+          <Dropzone
+            onChange={(file) => setImageFiles(file)}
+            multiple={multiple}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -19,14 +19,20 @@ const img = {
 interface DropzoneProps {
   onChange: (files: File[]) => void;
   error?: string;
+  multiple?: boolean;
 }
 
-function Dropzone({ onChange, error }: DropzoneProps) {
+function Dropzone({
+  onChange,
+  error,
+  multiple = true,
+}: DropzoneProps) {
   const [files, setFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
     },
+    multiple: multiple,
     onDrop: (acceptedFiles) => {
       //check file size
       const maxSize = 5 * 1024 * 1024; // 5MB

@@ -36,12 +36,17 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
     register,
     setValue,
     handleSubmit,
+    watch,
     reset,
     formState: { errors },
   } = useForm<CategoryForm>({
     resolver: zodResolver(categorySchema),
     mode: "all",
     defaultValues: initialValues,
+  });
+
+  watch((val) => {
+    console.log(val.parentCategoryId);
   });
 
   const handleSubmitAndClose = (val: CategoryForm) => {
@@ -99,6 +104,13 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
             options={categories}
             onChange={(_, value) =>
               setValue("parentCategoryId", value?.id, { shouldValidate: true })
+            }
+            value={
+              categories.find((cat) => cat.id === watch("parentCategoryId")) ??
+              categories.find(
+                (cat) => cat.id === initialValues?.parentCategoryId,
+              ) ??
+              null
             }
             getOptionLabel={(data) => data.name}
             renderInput={(params) => (

@@ -115,6 +115,13 @@ const CreateNewProductItemModal: React.FC<CreateNewProductItemModalProps> = ({
             helperText={errors.price?.message}
             {...register("price")}
           />
+          <TextField
+            label="Weight"
+            variant="outlined"
+            error={!!errors.weight?.message}
+            helperText={errors.weight?.message}
+            {...register("weight")}
+          />
           <Dropzone
             onChange={(file) => {
               setValue("images", file);

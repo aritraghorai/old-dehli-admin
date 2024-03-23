@@ -195,6 +195,17 @@ export const DashBoardPage = () => {
             value: slot.id,
           })) ?? [],
       },
+      {
+        accessorFn: (row) => <Stack>
+          {
+            row.allowZones.map((zone) => (
+              <Typography key={zone.id}>{zone.name}</Typography>
+            ))
+          }
+        </Stack>,
+        header: "Allow Zones",
+        enableEditing: false,
+      }
     ],
     [errors, categories, setValue, getValues, productTypes, timeSlots],
     //end

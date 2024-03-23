@@ -106,6 +106,7 @@ export type Product = {
   productTag: Array<ProductTag>;
   productItems: Array<ProductItem>;
   type: ProductType;
+  allowZones: Array<Zone>;
   timeSlot?: TimeSlot;
   category: Category;
   createdAt: string;
@@ -157,6 +158,7 @@ export const ProductItemSchema = z.object({
     .transform((val) => +val),
   images: z.array(z.any()).min(1, "Minimum 1 Image").max(5, "Maximun 5 Image"),
   optionValues: z.array(z.string().uuid()).optional(),
+  weight: z.coerce.number().positive("Weight must be a positive number"),
 });
 export type ProductItemForm = z.infer<typeof ProductItemSchema>;
 

@@ -101,7 +101,7 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
           <Autocomplete
             id="tags-standard"
             options={data}
-            getOptionLabel={(data) => data.name}
+            getOptionLabel={(data) => data.slug}
             onChange={(_, value) =>
               setValue("categoryId", value?.id as string, {
                 shouldValidate: true,

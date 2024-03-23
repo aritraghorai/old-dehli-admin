@@ -91,6 +91,13 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
             helperText={errors.price?.message}
             {...register("price")}
           />
+          <TextField
+            label="Min Quantity Order"
+            variant="outlined"
+            error={!!errors.minOrderQuantity?.message}
+            helperText={errors.minOrderQuantity?.message}
+            {...register("minOrderQuantity")}
+          />
           <Autocomplete
             id="tags-standard"
             options={data}

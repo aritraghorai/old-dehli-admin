@@ -112,6 +112,7 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
+  minOrderQuantity: number;
 };
 
 export type Option = {
@@ -143,6 +144,7 @@ export const productFormSchema = z.object({
   price: z.coerce.number().positive(),
   productType: z.string().uuid(),
   timeSlot: z.string().uuid(),
+  minOrderQuantity: z.coerce.number().positive(),
 });
 export type ProductForm = z.infer<typeof productFormSchema>;
 
@@ -258,6 +260,7 @@ export const UpdateProductRequestBodySchema = z.object({
   isActive: z.boolean().optional(),
   productType: z.string().uuid().optional(),
   timeSlot: z.string().uuid().optional(),
+  minOrderQuantity: z.coerce.number().positive().optional(),
 });
 
 export type UpdateProductRequestBody = z.infer<
@@ -276,7 +279,7 @@ export const UpdateProductItemRequestBodySchema = z.object({
     .positive()
     .transform((val) => +val),
   optionValues: z.array(z.string().uuid()).optional(),
-  weight: z.coerce.number().positive()
+  weight: z.coerce.number().positive(),
 });
 
 export type UpdateProductItemRequestBody = z.infer<
@@ -431,4 +434,4 @@ export type TimeSlot = {
   endTime: string;
   createdAt: string;
   updatedAt: string;
-}
+};

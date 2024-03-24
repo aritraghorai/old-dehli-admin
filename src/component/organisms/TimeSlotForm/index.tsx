@@ -16,7 +16,7 @@ import {
 } from "@/utils/types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 import dayjs from "dayjs";
 import { useEffect } from "react";
@@ -87,8 +87,9 @@ const TimeSlotForm: React.FC<TimeSlotFormType> = ({
           onSubmit={handleSubmit(handleSubmitAndClose)}
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopTimePicker
+            <MobileTimePicker
               label="Start Time"
+              ampmInClock
               value={
                 initialTimeSlot?.startTime
                   ? dayjs(initialTimeSlot.startTime)
@@ -100,7 +101,7 @@ const TimeSlotForm: React.FC<TimeSlotFormType> = ({
                 })
               }
             />
-            <DesktopTimePicker
+            <MobileTimePicker
               label="End Time"
               value={
                 initialTimeSlot?.endTime

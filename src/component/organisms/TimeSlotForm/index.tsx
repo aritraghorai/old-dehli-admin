@@ -96,9 +96,13 @@ const TimeSlotForm: React.FC<TimeSlotFormType> = ({
                   : watch("startTime") ?? null
               }
               onChange={(val) =>
-                setValue("startTime", dayjs(val).toDate(), {
-                  shouldValidate: true,
-                })
+                setValue(
+                  "startTime",
+                  dayjs(val).toISOString() as unknown as Date,
+                  {
+                    shouldValidate: true,
+                  },
+                )
               }
             />
             <MobileTimePicker
@@ -109,9 +113,13 @@ const TimeSlotForm: React.FC<TimeSlotFormType> = ({
                   : watch("endTime") ?? null
               }
               onChange={(val) =>
-                setValue("endTime", dayjs(val).toDate(), {
-                  shouldValidate: true,
-                })
+                setValue(
+                  "endTime",
+                  dayjs(val).toISOString() as unknown as Date,
+                  {
+                    shouldValidate: true,
+                  },
+                )
               }
             />
           </LocalizationProvider>

@@ -291,7 +291,9 @@ export type UserAddress = {
   name: string;
   mobile: string;
   alternatePhone: string;
-  pincode: string;
+  pincode: Pincode;
+  startTime: string;
+  endTime: string;
   locality: string;
   address: string;
   city: string;
@@ -316,6 +318,9 @@ export type Order = {
   paymentGateway: keyof typeof PAYMENT_GATEWAY;
   paymentStatus: keyof typeof PAYMENT_STATUS;
   createdAt: string;
+  user: User;
+  billingAddress: UserAddress;
+  orderAddress: UserAddress;
   updatedAt: string;
 };
 

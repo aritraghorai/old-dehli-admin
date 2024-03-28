@@ -8,6 +8,9 @@ import {
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
 import {
+  Card,
+  CardContent,
+  CardHeader,
   IconButton,
   Paper,
   Stack,
@@ -210,7 +213,52 @@ export const OrderPage = () => {
     ),
     renderDetailPanel: (props) => {
       return (
-        <Stack>
+        <Stack gap={2}>
+          <Stack direction="row" gap={2}>
+            <Typography variant="h6">
+              Order Id: {props.row.original.id}
+            </Typography>
+            <Typography variant="h6">
+              Order Date: {props.row.original.createdAt}
+            </Typography>
+          </Stack>
+          <Card sx={{ width: "fit-content" }}>
+            <CardHeader title="User Details" />
+            <CardContent>
+              <Stack direction="column" gap={2}>
+                <Typography variant="h6">
+                  User Name: {props.row.original.user.name}
+                </Typography>
+                <Typography variant="h6">
+                  Phone: {props.row.original.user.phoneNumber}
+                </Typography>
+              </Stack>
+            </CardContent>
+          </Card>
+          <Card sx={{ width: "fit-content" }}>
+            <CardHeader title="Shipping Details" />
+            <CardContent>
+              <Stack direction="column" gap={2}>
+                <Typography variant="h6">
+                  Address: {props.row.original.orderAddress.address}
+                </Typography>
+                <Typography variant="h6">
+                  City: {props.row.original.orderAddress.city}
+                </Typography>
+                <Typography variant="h6">
+                  State: {props.row.original.orderAddress.state}
+                </Typography>
+                <Typography variant="h6">
+                  Pin Code: {props.row.original.orderAddress.pincode.pincode}
+                </Typography>
+                <Typography variant="h6">
+                  Time Slot:
+                  {props.row.original.orderAddress.startTime}{"-"}
+                  {props.row.original.orderAddress.endTime}
+                </Typography>
+              </Stack>
+            </CardContent>
+          </Card>
           <Typography variant="h6">Order Items</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -269,7 +317,7 @@ export const OrderPage = () => {
   return (
     <FlowTemplate>
       <Stack p={2} gap={2}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">Orders</Typography>
         <MaterialReactTable table={table} />
       </Stack>
     </FlowTemplate>

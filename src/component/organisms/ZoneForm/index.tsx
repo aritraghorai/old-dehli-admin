@@ -88,7 +88,7 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
 
   return (
     <Dialog onClose={handleClose} {...props}>
-      <DialogTitle>{formType} New Category</DialogTitle>
+      <DialogTitle>{formType} New Zone</DialogTitle>
       <DialogContent dividers>
         <Stack
           gap={3}
@@ -204,8 +204,8 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
               <TextField
                 {...params}
                 variant="outlined"
-                label="Patent Category"
-                placeholder="Select Category"
+                label="Select Products"
+                placeholder="Select Products"
                 error={!!errors.products?.message}
                 helperText={errors.products?.message}
               />

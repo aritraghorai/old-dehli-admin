@@ -317,6 +317,13 @@ export type Order = {
   paymentId?: string;
   paymentGateway: keyof typeof PAYMENT_GATEWAY;
   paymentStatus: keyof typeof PAYMENT_STATUS;
+  razorpayPayment: {
+    id: string;
+    orderId: string;
+    paymentId: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   createdAt: string;
   user: User;
   billingAddress: UserAddress;

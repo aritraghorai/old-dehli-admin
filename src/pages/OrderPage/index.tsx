@@ -174,7 +174,7 @@ export const OrderPage = () => {
         enableEditing: false,
       },
       {
-        accessorKey: "paymentId",
+        accessorKey: "razorpayPayment.paymentId",
         header: "Payment Id",
         enableEditing: false,
       },
@@ -257,7 +257,8 @@ export const OrderPage = () => {
                 </Typography>
                 <Typography variant="h6">
                   Time Slot:
-                  {props.row.original.orderAddress.startTime}{"-"}
+                  {props.row.original.orderAddress.startTime}
+                  {"-"}
                   {props.row.original.orderAddress.endTime}
                 </Typography>
               </Stack>

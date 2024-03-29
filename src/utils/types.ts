@@ -317,7 +317,7 @@ export type Order = {
   paymentId?: string;
   paymentGateway: keyof typeof PAYMENT_GATEWAY;
   paymentStatus: keyof typeof PAYMENT_STATUS;
-  razorpayPayment: {
+  razorpayPayment?: {
     id: string;
     orderId: string;
     paymentId: string;

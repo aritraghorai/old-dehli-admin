@@ -174,7 +174,7 @@ export const OrderPage = () => {
         enableEditing: false,
       },
       {
-        accessorKey: "razorpayPayment.paymentId",
+        accessorFn: (row) => row.razorpayPayment?.paymentId,
         header: "Payment Id",
         enableEditing: false,
       },

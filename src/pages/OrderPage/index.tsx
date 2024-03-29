@@ -107,9 +107,13 @@ export const OrderPage = () => {
   const columns = useMemo<MRT_ColumnDef<Order>[]>(
     () => [
       {
-        accessorKey: "id",
+        accessorFn: (row) => row.id,
         header: "Id",
         enableEditing: false,
+      },
+      {
+        accessorKey: "user.name",
+        header: "User Name",
       },
       {
         accessorKey: "status",

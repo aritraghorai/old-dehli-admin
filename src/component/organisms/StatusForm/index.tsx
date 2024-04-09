@@ -14,7 +14,6 @@ import {
   FormType,
   Status,
   StatusFormRequest,
-  TimeSlotRequestForm,
   statusFormSchema,
 } from "@/utils/types";
 import { useEffect } from "react";
@@ -35,7 +34,6 @@ const StatusForm: React.FC<StatusFormType> = ({
 }) => {
   const {
     setValue,
-    watch,
     handleSubmit,
     register,
     reset,

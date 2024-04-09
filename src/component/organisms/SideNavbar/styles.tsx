@@ -15,7 +15,7 @@ export const StyledLogo = styled(Stack)({
   display: 'flex',
   flexDirection: 'row',
   height: theme.spacing(14),
-  padding: `${theme.spacing(2.5)} ${theme.spacing(5)}`,
+  padding: `${theme.spacing(1.5)} ${theme.spacing(5)}`,
   alignItems: 'center',
   gap: theme.spacing(2.5),
   alignSelf: 'stretch',
@@ -34,7 +34,7 @@ export const StyledElements = styled(Stack)({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  gap: theme.spacing(3),
+  gap: theme.spacing(2),
   alignSelf: 'stretch',
 })
 export const StyledMainItems = styled(Stack)({
@@ -51,7 +51,7 @@ export const StyledNavItem = styled(Stack)({
   width: theme.spacing(40),
   padding: theme.spacing(4),
   alignItems: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
   '&:hover': {
     backgroundColor: theme.palette.structural.STRUCTURAL_100,
     cursor: 'pointer',

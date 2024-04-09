@@ -131,7 +131,7 @@ export type OptionValue = {
 };
 
 export type LoginFormBody = {
-  phoneNumber: string;
+  email: string;
   password: string;
 };
 
@@ -447,3 +447,21 @@ export type TimeSlot = {
   createdAt: string;
   updatedAt: string;
 };
+
+export const statusFormSchema = z.object({
+  name: z.string(),
+  video_url: z.string().url(),
+  description: z.string(),
+});
+
+export type StatusFormRequest = z.infer<typeof statusFormSchema>;
+
+
+export type Status = {
+  id: string;
+  name: string;
+  video_url: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}

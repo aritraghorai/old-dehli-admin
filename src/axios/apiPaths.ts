@@ -35,6 +35,8 @@ const PRODUCT_TYPE = "product-type";
 const PRODUCT_TYPE_BY_ID = (id: string) => `${PRODUCT_TYPE}/${id}`;
 const TIME_SLOTS = "timeslot";
 const TIME_SLOT_BY_ID = (id: string) => `${TIME_SLOTS}/${id}`;
+const STATUS = "/status"
+const STATUS_BY_ID = (id: string) => `${STATUS}/${id}`
 
 export default {
   PRODUCT,
@@ -69,4 +71,6 @@ export default {
   PRODUCT_TYPE_BY_ID,
   TIME_SHOTS: TIME_SLOTS,
   TIME_SHOT_BY_ID: TIME_SLOT_BY_ID,
+  STATUS,
+  STATUS_BY_ID
 };

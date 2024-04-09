@@ -26,6 +26,7 @@ export const navItems = [
   { id: 9, label: "Zones", iconSrc: HomeIcon, path: "/zones" },
   { id: 10, label: "Product Type", iconSrc: HomeIcon, path: "/product-type" },
   { id: 11, label: "Time Slots", iconSrc: HomeIcon, path: "/time-slots" },
+  { id: 12, label: "Status Page", iconSrc: HomeIcon, path: "/status" },
 ];
 
 const SideNavBar = () => {
@@ -38,10 +39,9 @@ const SideNavBar = () => {
         </StyledLogo>
         {navItems.map((item) => (
           <Stack key={item.id} width={"100%"}>
-            <Stack px={4}>
+            <Stack px={1}>
               <StyledNavItem onClick={() => navigate(item.path)}>
-                <Stack direction="row" gap={theme.spacing(2)}>
-                  <HomeIcon />
+                <Stack direction="row" gap={theme.spacing(1)}>
                   <Typography variant="body1">{item.label}</Typography>
                 </Stack>
               </StyledNavItem>

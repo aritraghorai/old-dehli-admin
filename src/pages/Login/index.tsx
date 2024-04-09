@@ -33,7 +33,7 @@ const LoginPage = () => {
     },
   });
   const [formState, setFormState] = useState<LoginFormBody>({
-    phoneNumber: "",
+    email: "",
     password: "",
   });
 
@@ -49,16 +49,16 @@ const LoginPage = () => {
         onSubmit={(e) => {
           e.preventDefault();
           mutate(formState);
-          setFormState({ phoneNumber: "", password: "" });
+          setFormState({ email: "", password: "" });
         }}
       >
         <Typography variant="h4" textAlign="center">
           Login Page
         </Typography>
         <InputLabel
-          label="Phone No"
-          name="phoneNumber"
-          value={formState.phoneNumber}
+          label="Email"
+          name="email"
+          value={formState.email}
           labelVariant="body2"
           onChange={handleFormChange}
         />
@@ -71,7 +71,7 @@ const LoginPage = () => {
         />
         <Button
           type="submit"
-          disabled={formState.password === "" || formState.phoneNumber === ""}
+          disabled={formState.password === "" || formState.email === ""}
         >
           Login
         </Button>

@@ -12,6 +12,7 @@ import {
   ProductTypeRequestBody,
   Shop,
   ShopRequestBody,
+  StatusFormRequest,
   TimeSlotRequestForm,
   UpdateOrderRequestBody,
   UpdateProductItemRequestBody,
@@ -282,5 +283,25 @@ export const updateTimeSlotById = async (
   data: TimeSlotRequestForm,
 ) => {
   const response = await apiClient.patch(apiPaths.TIME_SHOT_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const getAllStatus = async () => {
+  const response = await apiClient.get(apiPaths.STATUS);
+  return response.data.data;
+};
+
+export const createNewStatus = async (data: StatusFormRequest) => {
+  const response = await apiClient.post(apiPaths.STATUS, data);
+  return response.data.data;
+};
+
+export const updateStatusById = async (id: string, data: StatusFormRequest) => {
+  const response = await apiClient.patch(apiPaths.STATUS_BY_ID(id), data);
+  return response.data.data;
+};
+
+export const deleteStatusById = async (id: string) => {
+  const response = await apiClient.delete(apiPaths.STATUS_BY_ID(id));
   return response.data.data;
 };

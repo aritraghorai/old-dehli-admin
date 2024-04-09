@@ -27,6 +27,7 @@ import PinCodePage from "./pages/PincodePage";
 import ZonesPage from "./pages/ZonesPage";
 import ProductTypePage from "./pages/ProductTypePage";
 import TimeSlotPage from "./pages/TimeSlotPage";
+import StatusPage from "./pages/StatusPage";
 
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
@@ -105,6 +106,10 @@ export const router = createBrowserRouter([
       {
         path: "product-type",
         element: <ProductTypePage />,
+      },
+      {
+        path: "status",
+        element: <StatusPage />,
       },
       {
         path: "",

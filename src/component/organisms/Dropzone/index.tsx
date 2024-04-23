@@ -30,7 +30,11 @@ function Dropzone({
   const [files, setFiles] = useState<File[]>([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      "image/*": [],
+      'image/jpeg': [],
+      'image/png': [],
+      'image/webp': [],
+      'image/heic': [],
+      'image/jfif': [],
     },
     multiple: multiple,
     onDrop: (acceptedFiles) => {

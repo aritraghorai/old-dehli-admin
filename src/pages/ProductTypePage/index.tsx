@@ -28,7 +28,7 @@ import { ZodError } from "zod";
 import toast from "react-hot-toast";
 import ImageEditorModal from "@/component/organisms/ImageEditorModal";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import NewProductTypeForm from "@/component/organisms/ProductTypeForm";
+import PromotionForm from "@/component/organisms/ProductTypeForm";
 import useProductType from "@/hooks/useProductType";
 
 export const ProductTypePage = () => {
@@ -195,7 +195,7 @@ export const ProductTypePage = () => {
         <Typography variant="h4">Product Types</Typography>
         <MaterialReactTable table={table} />
       </Stack>
-      <NewProductTypeForm
+      <PromotionForm
         open={showCreateShopModal}
         onClose={toogleCreateShopModal}
         onSubmit={async (data) => {

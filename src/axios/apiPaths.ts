@@ -37,6 +37,8 @@ const TIME_SLOTS = "timeslot";
 const TIME_SLOT_BY_ID = (id: string) => `${TIME_SLOTS}/${id}`;
 const STATUS = "/status"
 const STATUS_BY_ID = (id: string) => `${STATUS}/${id}`
+const PROMOTION = "/banner";
+const PROMOTION_BY_ID = (id: string) => `${PROMOTION}/${id}`
 
 export default {
   PRODUCT,
@@ -72,5 +74,7 @@ export default {
   TIME_SHOTS: TIME_SLOTS,
   TIME_SHOT_BY_ID: TIME_SLOT_BY_ID,
   STATUS,
-  STATUS_BY_ID
+  STATUS_BY_ID,
+  PROMOTION,
+  PROMOTION_BY_ID
 };

@@ -3,6 +3,7 @@ import {
   CategoryForm,
   Image,
   LoginFormBody,
+  NewBannerFormRequestBody,
   NewProductTagForm,
   Pincode,
   ProductForm,
@@ -305,3 +306,18 @@ export const deleteStatusById = async (id: string) => {
   const response = await apiClient.delete(apiPaths.STATUS_BY_ID(id));
   return response.data.data;
 };
+
+export const getAllPromotion = async () => {
+  const response = await apiClient.get(apiPaths.PROMOTION);
+  return response.data.data;
+}
+
+export const createNewPromotion = async (data: NewBannerFormRequestBody) => {
+  const response = await apiClient.post(apiPaths.PROMOTION, data);
+  return response.data.data;
+}
+
+export const deletePromotionById = async (id: string) => {
+  const response = await apiClient.delete(apiPaths.PROMOTION_BY_ID(id));
+  return response.data;
+}

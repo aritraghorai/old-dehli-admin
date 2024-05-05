@@ -27,6 +27,7 @@ export const navItems = [
   { id: 10, label: "Product Type", iconSrc: HomeIcon, path: "/product-type" },
   { id: 11, label: "Time Slots", iconSrc: HomeIcon, path: "/time-slots" },
   { id: 12, label: "Status Page", iconSrc: HomeIcon, path: "/status" },
+  { id: 13, label: "Promotion", iconSrc: HomeIcon, path: "/promotions" },
 ];
 
 const SideNavBar = () => {

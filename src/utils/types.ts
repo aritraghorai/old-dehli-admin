@@ -465,3 +465,22 @@ export type Status = {
   createdAt: string;
   updatedAt: string;
 }
+
+export const NewBannerFormSchema = z.object({
+  image: z.any(),
+  name: z.string(),
+  category: z.string().uuid(),
+});
+
+export type NewBannerFormType = z.infer<typeof NewBannerFormSchema>;
+
+export type NewBannerFormRequestBody = Omit<NewBannerFormType, "image"> & {
+  image: string;
+};
+
+export type Banner = {
+  id: string;
+  name: string;
+  category: Category;
+  image: Image
+}

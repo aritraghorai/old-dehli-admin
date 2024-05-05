@@ -28,6 +28,7 @@ import ZonesPage from "./pages/ZonesPage";
 import ProductTypePage from "./pages/ProductTypePage";
 import TimeSlotPage from "./pages/TimeSlotPage";
 import StatusPage from "./pages/StatusPage";
+import PromotionPage from "./pages/PromotionPage";
 
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
@@ -112,9 +113,14 @@ export const router = createBrowserRouter([
         element: <StatusPage />,
       },
       {
+        path: "promotions",
+        element: <PromotionPage />
+      },
+      {
         path: "",
         element: <Navigate to="/dashboard" />,
       },
+
     ],
   },
   {

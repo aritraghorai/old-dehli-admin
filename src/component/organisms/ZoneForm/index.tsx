@@ -17,7 +17,7 @@ import {
   FormType,
   Pincode,
   Zone,
-  ZoneForm,
+  type ZoneForm,
   ZoneFormSchema,
 } from "@/utils/types";
 import { useEffect } from "react";

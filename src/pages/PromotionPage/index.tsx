@@ -1,4 +1,4 @@
-import { React, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   type MRT_ColumnDef,
   useMaterialReactTable,
@@ -6,7 +6,7 @@ import {
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
-import { Banner} from "@/utils/types";
+import { Banner } from "@/utils/types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import usePromotion from "@/hooks/usePromotion";
 import PromotionForm from "@/component/organisms/PromotionFrom";

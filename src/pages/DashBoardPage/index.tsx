@@ -40,12 +40,14 @@ import toast from "react-hot-toast";
 import useProducts from "@/hooks/useProducts";
 import useProductType from "@/hooks/useProductType";
 import useTimeSlots from "@/hooks/useTimeSlot";
+import useShop from "@/hooks/useShop";
 
 export const DashBoardPage = () => {
   const { products, isRefetching, isLoading, refetch: fetch } = useProducts();
   const navigate = useNavigate();
   const { data: categories } = useCategory();
   const { productTypes } = useProductType();
+  const { shops } = useShop()
   const { timeSlots = [] } = useTimeSlots();
 
   const {
@@ -119,7 +121,24 @@ export const DashBoardPage = () => {
       {
         accessorKey: "shop.name",
         header: "Shop Name",
-        enableEditing: false,
+        enableEditing: true,
+        editVariant: "select",
+        muiEditTextFieldProps: (row) => ({
+          required: true,
+          value:
+            getValues("shopId") ?? row.row.original.shop.id ?? null,
+          name: "shopId",
+          onChange: (e) => {
+            setValue("shopId", e.target.value, {
+              shouldValidate: true,
+            });
+          },
+        }),
+        editSelectOptions:
+          shops?.map((shop) => ({
+            label: shop.slug,
+            value: shop.id,
+          })) ?? [],
       },
       {
         accessorKey: "minOrderQuantity",

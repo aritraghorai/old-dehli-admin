@@ -261,6 +261,7 @@ export const UpdateProductRequestBodySchema = z.object({
   productType: z.string().uuid().optional(),
   timeSlot: z.string().uuid().optional(),
   minOrderQuantity: z.coerce.number().positive().optional(),
+  shopId: z.string().uuid().optional(),
 });
 
 export type UpdateProductRequestBody = z.infer<

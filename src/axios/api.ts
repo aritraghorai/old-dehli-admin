@@ -13,7 +13,6 @@ import {
   ProductTypeRequestBody,
   Shop,
   ShopRequestBody,
-  StatusFormRequest,
   StatusRequestBody,
   TimeSlotRequestForm,
   UpdateOrderRequestBody,

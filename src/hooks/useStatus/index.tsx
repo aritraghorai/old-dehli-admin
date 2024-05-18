@@ -5,7 +5,7 @@ import {
   updateStatusById,
 } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
-import { Status, StatusFormRequest, StatusRequestBody } from "@/utils/types";
+import { Status, StatusRequestBody } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 

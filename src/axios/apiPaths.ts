@@ -39,6 +39,7 @@ const STATUS = "/status"
 const STATUS_BY_ID = (id: string) => `${STATUS}/${id}`
 const PROMOTION = "/banner";
 const PROMOTION_BY_ID = (id: string) => `${PROMOTION}/${id}`
+const UPLOAD_VIDEO = "upload/video";
 
 export default {
   PRODUCT,
@@ -76,5 +77,6 @@ export default {
   STATUS,
   STATUS_BY_ID,
   PROMOTION,
-  PROMOTION_BY_ID
+  PROMOTION_BY_ID,
+  UPLOAD_VIDEO,
 };

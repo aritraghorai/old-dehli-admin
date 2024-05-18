@@ -151,6 +151,16 @@ export const DashBoardPage = () => {
         },
       },
       {
+        accessorKey: "priority",
+        header: "Priority",
+        enableEditing: true,
+        muiEditTextFieldProps: {
+          error: !!errors.priority?.message,
+          helperText: errors.priority?.message,
+          required: true,
+        },
+      },
+      {
         accessorKey: "price",
         header: "Price",
         muiEditTextFieldProps: {
@@ -247,7 +257,7 @@ export const DashBoardPage = () => {
   const handleSaveProduct: MRT_TableOptions<Product>["onEditingRowSave"] =
     async ({ values, table }) => {
       Object.keys(values).forEach((key) => {
-        if (key === "name" || key === "slug" || key === "price" || key === "minOrderQuantity") {
+        if (key === "name" || key === "slug" || key === "price" || key === "minOrderQuantity" || key === "priority") {
           setValue(key as keyof UpdateProductRequestBody, values[key], {
             shouldValidate: true,
           });

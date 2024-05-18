@@ -14,6 +14,7 @@ import {
   Shop,
   ShopRequestBody,
   StatusFormRequest,
+  StatusRequestBody,
   TimeSlotRequestForm,
   UpdateOrderRequestBody,
   UpdateProductItemRequestBody,
@@ -292,12 +293,12 @@ export const getAllStatus = async () => {
   return response.data.data;
 };
 
-export const createNewStatus = async (data: StatusFormRequest) => {
+export const createNewStatus = async (data: StatusRequestBody) => {
   const response = await apiClient.post(apiPaths.STATUS, data);
   return response.data.data;
 };
 
-export const updateStatusById = async (id: string, data: StatusFormRequest) => {
+export const updateStatusById = async (id: string, data: StatusRequestBody) => {
   const response = await apiClient.patch(apiPaths.STATUS_BY_ID(id), data);
   return response.data.data;
 };
@@ -320,4 +321,11 @@ export const createNewPromotion = async (data: NewBannerFormRequestBody) => {
 export const deletePromotionById = async (id: string) => {
   const response = await apiClient.delete(apiPaths.PROMOTION_BY_ID(id));
   return response.data;
+}
+
+export const uploadLoadVideo = async (file: File) => {
+  const formData = new FormData();
+  formData.append("video", file);
+  const response = await apiClient.post(apiPaths.UPLOAD_VIDEO, formData);
+  return response.data.data as Image;
 }

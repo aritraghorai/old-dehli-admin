@@ -11,6 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import useStatus from "@/hooks/useStatus";
 import StatusForm from "@/component/organisms/StatusForm";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { uploadLoadVideo } from "@/axios/api";
 
 export const StatusPage = () => {
   const {
@@ -77,15 +78,15 @@ export const StatusPage = () => {
     },
     renderRowActions: (props) => (
       <Stack direction="row">
-        <IconButton
-          onClick={() => {
-            setSelectedStatus(() => props.row.original);
-            setStatusFormType("Update");
-            tooogleTimeSlotModel();
-          }}
-        >
-          <EditIcon />
-        </IconButton>
+        {/* <IconButton */}
+        {/*   onClick={() => { */}
+        {/*     setSelectedStatus(() => props.row.original); */}
+        {/*     setStatusFormType("Update"); */}
+        {/*     tooogleTimeSlotModel(); */}
+        {/*   }} */}
+        {/* > */}
+        {/*   <EditIcon /> */}
+        {/* </IconButton> */}
         <IconButton
           onClick={() => {
             deleteStatus(props.row.original.id);
@@ -120,13 +121,21 @@ export const StatusPage = () => {
         open={showStatusFormModal}
         onClose={tooogleTimeSlotModel}
         formType={statusFormType}
-        onSubmit={(data) => {
+        onSubmit={async (data) => {
           if (statusFormType === "Create") {
-            addStatus(data);
+            const video = await uploadLoadVideo(data.video)
+            addStatus({
+              video_url: video.url,
+              ...data
+            });
           } else {
+            const video = await uploadLoadVideo(data.video)
             updateStatus({
               id: selectedStatus?.id as string,
-              data,
+              data: {
+                ...data,
+                video_url: video.url
+              }
             });
             setSelectedStatus(undefined);
             setStatusFormType("Create");

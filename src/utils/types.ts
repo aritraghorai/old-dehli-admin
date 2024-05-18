@@ -113,6 +113,7 @@ export type Product = {
   updatedAt: string;
   isActive: boolean;
   minOrderQuantity: number;
+  priority: number;
 };
 
 export type Option = {
@@ -262,6 +263,7 @@ export const UpdateProductRequestBodySchema = z.object({
   timeSlot: z.string().uuid().optional(),
   minOrderQuantity: z.coerce.number().positive().optional(),
   shopId: z.string().uuid().optional(),
+  priority: z.number().optional(),
 });
 
 export type UpdateProductRequestBody = z.infer<
@@ -451,11 +453,16 @@ export type TimeSlot = {
 
 export const statusFormSchema = z.object({
   name: z.string(),
-  video_url: z.string().url(),
+  video: z.any(),
   description: z.string(),
 });
 
+
 export type StatusFormRequest = z.infer<typeof statusFormSchema>;
+
+export type StatusRequestBody = Omit<StatusFormRequest, "video"> & {
+  video_url: string;
+};
 
 
 export type Status = {
@@ -471,6 +478,7 @@ export const NewBannerFormSchema = z.object({
   image: z.any(),
   name: z.string(),
   category: z.string().uuid(),
+  position: z.coerce.number().positive(),
 });
 
 export type NewBannerFormType = z.infer<typeof NewBannerFormSchema>;
@@ -484,4 +492,5 @@ export type Banner = {
   name: string;
   category: Category;
   image: Image
+  position: number;
 }

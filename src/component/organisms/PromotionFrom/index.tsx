@@ -73,6 +73,14 @@ const PromotionForm: React.FC<PromotionFormType> = ({
             helperText={errors.name?.message}
             {...register("name")}
           />
+          <TextField
+            label="Position"
+            variant="outlined"
+            type="number"
+            error={!!errors.position?.message}
+            helperText={errors.position?.message}
+            {...register("position")}
+          />
           <Autocomplete
             id="tags-standard"
             options={data ?? []}

@@ -44,9 +44,15 @@ export const PromotionPage = () => {
         header: "Category",
       },
       {
+        accessorKey: "position",
+        header: "Position",
+      },
+      {
         header: "Image",
         accessorFn: (data) => <img
           src={data.image.url}
+          width={200}
+          height={200}
         />
       }
 

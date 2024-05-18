@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -37,6 +38,7 @@ const StatusForm: React.FC<StatusFormType> = ({
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { isValid, errors },
   } = useForm<StatusFormRequest>({
     resolver: zodResolver(statusFormSchema),
@@ -55,11 +57,13 @@ const StatusForm: React.FC<StatusFormType> = ({
     reset();
     onClose();
   };
+  watch((val) => {
+    console.log(val)
+  });
 
   useEffect(() => {
     if (initialStatus) {
       setValue("name", initialStatus.name);
-      setValue("video_url", initialStatus.video_url);
       setValue("description", initialStatus.description);
     }
   }, [initialStatus, setValue]);
@@ -83,14 +87,23 @@ const StatusForm: React.FC<StatusFormType> = ({
             error={!!errors.name}
             helperText={errors.name?.message}
           />
-          <TextField
-            label="Video URL"
-            variant="outlined"
-            fullWidth
-            {...register("video_url")}
-            error={!!errors.video_url}
-            helperText={errors.video_url?.message}
-          />
+          <Typography variant="body2" color="textSecondary">Video</Typography>
+          <Button
+            variant="contained"
+            component="label"
+          >
+            Upload File
+            <input
+              type="file"
+              accept="video/*"
+              hidden
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setValue("video", file, { shouldValidate: true });
+              }}
+            />
+          </Button>
+          {!!watch().video && <Typography>{watch("video")?.name}</Typography>}
           <TextField
             label="Description"
             variant="outlined"
@@ -101,6 +114,7 @@ const StatusForm: React.FC<StatusFormType> = ({
             error={!!errors.description}
             helperText={errors.description?.message}
           />
+
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -5,7 +5,7 @@ import {
   updateStatusById,
 } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
-import { Status, StatusFormRequest } from "@/utils/types";
+import { Status, StatusFormRequest, StatusRequestBody } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -17,7 +17,7 @@ const useStatus = () => {
 
   const { mutate: addStatus } = useMutation({
     mutationKey: ["addStatus", apiPaths.STATUS],
-    mutationFn: (data: StatusFormRequest) => createNewStatus(data),
+    mutationFn: (data: StatusRequestBody) => createNewStatus(data),
     onSuccess: () => {
       toast.success("New Status Added");
       refetch();
@@ -26,7 +26,7 @@ const useStatus = () => {
 
   const { mutate: updateStatus } = useMutation({
     mutationKey: ["updateStatus", apiPaths.STATUS],
-    mutationFn: ({ data, id }: { data: StatusFormRequest; id: string }) =>
+    mutationFn: ({ data, id }: { data: StatusRequestBody; id: string }) =>
       updateStatusById(id, data),
     onSuccess: () => {
       toast.success("Status Updated");

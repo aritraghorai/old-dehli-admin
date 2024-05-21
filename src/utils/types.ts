@@ -146,6 +146,7 @@ export const productFormSchema = z.object({
   productType: z.string().uuid(),
   timeSlot: z.string().uuid(),
   minOrderQuantity: z.coerce.number().positive(),
+  allowZones: z.array(z.string().uuid()).optional(),
 });
 export type ProductForm = z.infer<typeof productFormSchema>;
 
@@ -264,6 +265,7 @@ export const UpdateProductRequestBodySchema = z.object({
   minOrderQuantity: z.coerce.number().positive().optional(),
   shopId: z.string().uuid().optional(),
   priority: z.number().optional(),
+  allowZones: z.array(z.string().uuid()).optional(),
 });
 
 export type UpdateProductRequestBody = z.infer<

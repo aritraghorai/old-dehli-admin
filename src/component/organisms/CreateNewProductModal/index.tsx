@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductForm, productFormSchema } from "@/utils/types";
 import useProductType from "@/hooks/useProductType";
 import useTimeSlots from "@/hooks/useTimeSlot";
+import useZones from "@/hooks/useZones";
 
 interface CreateNewProductModalProps extends Omit<DialogProps, "onSubmit"> {
   onSubmit: (data: ProductForm) => void;
@@ -33,6 +34,7 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
   const { productTags = [] } = useProductTags();
   const { productTypes = [] } = useProductType();
   const { timeSlots = [] } = useTimeSlots();
+  const { zones = [] } = useZones()
 
   const {
     register,
@@ -178,6 +180,35 @@ const CreateNewProductModal: React.FC<CreateNewProductModalProps> = ({
               />
             )}
           />
+
+          <Autocomplete
+            id="Zones"
+            multiple
+            options={zones}
+            onChange={(_, value) =>
+              setValue(
+                "allowZones",
+                value.map((v) => v.id),
+                {
+                  shouldValidate: true,
+                },
+              )
+            }
+            getOptionLabel={(data) => data.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Zones"
+                placeholder="Select Zones"
+                error={!!errors.allowZones?.message}
+                helperText={errors.allowZones?.message}
+              />
+            )}
+          />
+
+
+
 
           <Autocomplete
             id="tags-standard"

@@ -48,6 +48,7 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
     setValue,
     handleSubmit,
     watch,
+    getValues,
     reset,
     formState: { errors, isValid },
   } = useForm<ZoneForm>({
@@ -182,13 +183,29 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
           <Autocomplete
             id="tags-standard"
             options={products ?? []}
+            filterOptions={(options, params) => {
+              const filter = createFilterOptions()
+              const filtered = filter(options, params as any)
+              const allProduct = { name: 'Select All...', all: true } as any
+              return [allProduct, ...filtered]
+            }}
             multiple
-            onChange={(_, value) =>
+            onChange={(_, value: any) => {
+              if (value.find((val: any) => val.all)) {
+                setValue(
+                  "products",
+                  getValues("products")?.length === products.length ? [] : products.map((a) => a.id),
+                  { shouldValidate: true },
+                )
+                return
+              }
               setValue(
                 "products",
-                value.map((a) => a.id),
+                value.map((a: any) => a.id),
                 { shouldValidate: true },
               )
+
+            }
             }
             value={
               products?.filter((cat) =>

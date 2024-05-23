@@ -88,30 +88,17 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
   }, [initialValues, setValue]);
 
   return (
-    <Dialog onClose={handleClose} {...props}>
+    <Dialog onClose={handleClose} {...props} fullScreen >
       <DialogTitle>{formType} New Zone</DialogTitle>
-      <DialogContent dividers>
+      <DialogContent >
         <Stack
           gap={3}
-          width="400px"
+          // width="400px"
           component="form"
           id="crateZone"
           onSubmit={handleSubmit(handleSubmitAndClose)}
         >
-          <TextField
-            label="Name"
-            variant="outlined"
-            {...register("name")}
-            error={!!errors.name?.message}
-            helperText={errors.name?.message}
-          />
-          <TextField
-            label="Delivery Charges"
-            variant="outlined"
-            error={!!errors.deliveryCharges?.message}
-            helperText={errors.deliveryCharges?.message}
-            {...register("deliveryCharges")}
-          />
+
           <Autocomplete
             id="tags-standard"
             options={pinCodes ?? []}
@@ -138,6 +125,7 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
                 { shouldValidate: true },
               );
             }}
+            limitTags={2}
             multiple
             value={
               pinCodes.filter((cat) =>
@@ -168,6 +156,7 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
 
               return filtered;
             }}
+
             getOptionLabel={(data) => data.pincode}
             renderInput={(params) => (
               <TextField
@@ -190,6 +179,7 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
               return [allProduct, ...filtered]
             }}
             multiple
+            limitTags={2}
             onChange={(_, value: any) => {
               if (value.find((val: any) => val.all)) {
                 setValue(
@@ -228,6 +218,21 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
               />
             )}
           />
+          <TextField
+            label="Name"
+            variant="outlined"
+            {...register("name")}
+            error={!!errors.name?.message}
+            helperText={errors.name?.message}
+          />
+          <TextField
+            label="Delivery Charges"
+            variant="outlined"
+            error={!!errors.deliveryCharges?.message}
+            helperText={errors.deliveryCharges?.message}
+            {...register("deliveryCharges")}
+          />
+
         </Stack>
       </DialogContent>
       <DialogActions>

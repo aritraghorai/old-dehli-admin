@@ -25,6 +25,7 @@ import { FormType, Zone } from "@/utils/types";
 import useZones from "@/hooks/useZones";
 import ZoneForm from "@/component/organisms/ZoneForm";
 import EditIcon from "@mui/icons-material/Edit";
+import UploadZonesForm from "@/component/organisms/UploadZonesForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,10 +52,14 @@ export const ZonesPage = () => {
 
   const [selectedZone, setSelectedZone] = useState<Zone | undefined>();
 
+  const [uploadZonesFormOpen, setUploadZonesFormOpen] = useState(false);
+
   const [showZones, setShowZones] = useState(false);
   const [formType, setFormType] = useState<FormType>("Create");
 
   const toogleShowZones = () => setShowZones((prev) => !prev);
+
+  const toogleUploadZonesForm = () => setUploadZonesFormOpen((prev) => !prev);
 
   const columns = useMemo<MRT_ColumnDef<Zone>[]>(
     () => [
@@ -102,6 +107,12 @@ export const ZonesPage = () => {
           }}
         >
           Create New Zone
+        </Button>
+        <Button
+          variant="contained"
+          onClick={toogleUploadZonesForm}
+        >
+          Upload Zones
         </Button>
       </Stack>
     ),
@@ -175,7 +186,7 @@ export const ZonesPage = () => {
   return (
     <FlowTemplate>
       <Stack p={2} gap={2}>
-        <Typography variant="h4">Pin Codes</Typography>
+        <Typography variant="h4">Zones</Typography>
         <MaterialReactTable table={table} />
         <ZoneForm
           open={showZones}
@@ -195,6 +206,13 @@ export const ZonesPage = () => {
             }
           }}
           initialValues={selectedZone}
+        />
+        <UploadZonesForm
+          open={uploadZonesFormOpen}
+          onClose={toogleUploadZonesForm}
+          onSubmit={(data) => {
+            console.log(data);
+          }}
         />
       </Stack>
     </FlowTemplate>

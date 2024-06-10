@@ -350,7 +350,7 @@ export const UpdateOrderFormSchema = z.object({
           message:
             "Status must be one of these: Shipped, Delivered, Cancelled, Processing",
         }),
-      },
+      }
     )
     .optional(),
   paymentStatus: z
@@ -459,13 +459,11 @@ export const statusFormSchema = z.object({
   description: z.string(),
 });
 
-
 export type StatusFormRequest = z.infer<typeof statusFormSchema>;
 
 export type StatusRequestBody = Omit<StatusFormRequest, "video"> & {
   video_url: string;
 };
-
 
 export type Status = {
   id: string;
@@ -474,7 +472,7 @@ export type Status = {
   description: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export const NewBannerFormSchema = z.object({
   image: z.any(),
@@ -493,6 +491,10 @@ export type Banner = {
   id: string;
   name: string;
   category: Category;
-  image: Image
+  image: Image;
   position: number;
-}
+};
+
+export type UploadZoneFormType = {
+  file: File;
+};

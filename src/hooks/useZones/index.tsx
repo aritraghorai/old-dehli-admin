@@ -1,4 +1,4 @@
-import { createNewZone, getAllZones, updateZoneById } from "@/axios/api";
+import { createNewZone, getAllZones, updateZoneById, uploadMultipleZonesFromExel } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
 import { Zone, ZoneForm } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -33,13 +33,28 @@ const useZones = () => {
     },
   });
 
+  const { mutate: uploadZonesFromExel, isPending: isUploading } = useMutation({
+    mutationKey: ["uploadMultipleZones"],
+    mutationFn: (file: File) =>
+      uploadMultipleZonesFromExel(file),
+    onError: () => {
+      toast.error("Invalid Exel File");
+    },
+    onSuccess: () => {
+      toast.success("Zone uploaded successfully");
+      refetch();
+    },
+  });
+
+
   return {
     zones: data,
-    isLoading,
+    isLoading: isLoading || isUploading,
     isRefetching,
     refetch,
     createZone: mutate,
     updateZone,
+    uploadZonesFromExel,
   };
 };
 

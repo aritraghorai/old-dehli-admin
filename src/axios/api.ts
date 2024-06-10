@@ -51,7 +51,7 @@ export const createProduct = async (data: ProductForm) => {
 
 export const createProductItem = async (
   productId: string,
-  data: ProductItemRequestBody,
+  data: ProductItemRequestBody
 ) => {
   const response = await apiClient.post(apiPaths.PRODUCT_ITEM(productId), data);
   return response.data.data;
@@ -84,20 +84,20 @@ export const getProductByDetail = async (id: string) => {
 };
 export const deleteProductTag = async (
   productId: string,
-  productTagId: string,
+  productTagId: string
 ) => {
   const response = await apiClient.delete(
-    apiPaths.PRODUCT_TAG_ID_AND_PRODUCT_ID(productId, productTagId),
+    apiPaths.PRODUCT_TAG_ID_AND_PRODUCT_ID(productId, productTagId)
   );
   return response.data;
 };
 
 export const addProductTag = async (
   productId: string,
-  productTagId: string,
+  productTagId: string
 ) => {
   const response = await apiClient.post(
-    apiPaths.PRODUCT_TAG_ID_AND_PRODUCT_ID(productId, productTagId),
+    apiPaths.PRODUCT_TAG_ID_AND_PRODUCT_ID(productId, productTagId)
   );
   return response.data;
 };
@@ -119,7 +119,7 @@ export const UpdateShop = async (id: string, data: Partial<UpdateShopType>) => {
 
 export const updateProduct = async (
   id: string,
-  data: UpdateProductRequestBody,
+  data: UpdateProductRequestBody
 ) => {
   const response = await apiClient.patch(apiPaths.PRODUCT_BY_ID(id), data);
   return response.data.data;
@@ -132,11 +132,11 @@ export const createNewProductTag = async (data: NewProductTagForm) => {
 
 export const createProductOptionValue = async (
   id: string,
-  data: ProductOptionForm,
+  data: ProductOptionForm
 ) => {
   const response = await apiClient.post(
     apiPaths.PRODUCT_OPTION_BY_VALUE(id),
-    data,
+    data
   );
   return response.data.data;
 };
@@ -155,18 +155,18 @@ export const ME = async () => {
 
 export const updateProductItem = async (
   productItemId: string,
-  data: UpdateProductItemRequestBody,
+  data: UpdateProductItemRequestBody
 ) => {
   const response = await apiClient.patch(
     apiPaths.PRODUCT_ITEM_BY_ID(productItemId),
-    data,
+    data
   );
   return response.data.data;
 };
 
 export const deleteShopImageById = async (
   shopId: string,
-  data: { images: string[] },
+  data: { images: string[] }
 ) => {
   const response = await apiClient.delete(apiPaths.SHOP_IMAGE_BY_ID(shopId), {
     data: data,
@@ -176,35 +176,35 @@ export const deleteShopImageById = async (
 
 export const addShopImage = async (
   shopId: string,
-  data: { images: string[] },
+  data: { images: string[] }
 ) => {
   const response = await apiClient.post(
     apiPaths.SHOP_IMAGE_BY_ID(shopId),
-    data,
+    data
   );
   return response.data.data;
 };
 
 export const deleteProductItemImageById = async (
   id: string,
-  data: { images: string[] },
+  data: { images: string[] }
 ) => {
   const response = await apiClient.delete(
     apiPaths.PRODUCT_ITEM_BY_ID_IMAGE(id),
     {
       data: data,
-    },
+    }
   );
   return response.data.data;
 };
 
 export const addProductItemImageById = async (
   id: string,
-  data: { images: string[] },
+  data: { images: string[] }
 ) => {
   const response = await apiClient.post(
     apiPaths.PRODUCT_ITEM_BY_ID_IMAGE(id),
-    data,
+    data
   );
   return response.data.data;
 };
@@ -263,7 +263,7 @@ export const createProductType = async (data: ProductTypeRequestBody) => {
 
 export const updateProductTypeById = async (
   id: string,
-  data: UpdateProductTypeBody,
+  data: UpdateProductTypeBody
 ) => {
   const response = await apiClient.patch(apiPaths.PRODUCT_TYPE_BY_ID(id), data);
   return response.data.data;
@@ -281,7 +281,7 @@ export const createTimeSlot = async (data: TimeSlotRequestForm) => {
 
 export const updateTimeSlotById = async (
   id: string,
-  data: TimeSlotRequestForm,
+  data: TimeSlotRequestForm
 ) => {
   const response = await apiClient.patch(apiPaths.TIME_SHOT_BY_ID(id), data);
   return response.data.data;
@@ -310,21 +310,31 @@ export const deleteStatusById = async (id: string) => {
 export const getAllPromotion = async () => {
   const response = await apiClient.get(apiPaths.PROMOTION);
   return response.data.data;
-}
+};
 
 export const createNewPromotion = async (data: NewBannerFormRequestBody) => {
   const response = await apiClient.post(apiPaths.PROMOTION, data);
   return response.data.data;
-}
+};
 
 export const deletePromotionById = async (id: string) => {
   const response = await apiClient.delete(apiPaths.PROMOTION_BY_ID(id));
   return response.data;
-}
+};
 
 export const uploadLoadVideo = async (file: File) => {
   const formData = new FormData();
   formData.append("video", file);
   const response = await apiClient.post(apiPaths.UPLOAD_VIDEO, formData);
   return response.data.data as Image;
+};
+
+export const uploadMultipleZonesFromExel = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await apiClient.post(
+    apiPaths.UPLOAD_MULTIPLE_ZONES,
+    formData
+  );
+  return response.data
 }

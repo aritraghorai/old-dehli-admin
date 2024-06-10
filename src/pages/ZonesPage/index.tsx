@@ -48,7 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const ZonesPage = () => {
-  const { zones, isLoading, isRefetching, createZone, updateZone } = useZones();
+  const { zones, isLoading, isRefetching, createZone, updateZone, uploadZonesFromExel } = useZones();
 
   const [selectedZone, setSelectedZone] = useState<Zone | undefined>();
 
@@ -79,7 +79,7 @@ export const ZonesPage = () => {
         enableEditing: false,
       },
     ],
-    [],
+    []
   );
 
   const table = useMaterialReactTable({
@@ -97,7 +97,7 @@ export const ZonesPage = () => {
       density: "compact",
     },
     renderTopToolbar: () => (
-      <Stack direction="row" p={3}>
+      <Stack direction="row" p={3} gap={3}>
         <Button
           variant="contained"
           onClick={() => {
@@ -108,10 +108,7 @@ export const ZonesPage = () => {
         >
           Create New Zone
         </Button>
-        <Button
-          variant="contained"
-          onClick={toogleUploadZonesForm}
-        >
+        <Button variant="contained" onClick={toogleUploadZonesForm}>
           Upload Zones
         </Button>
       </Stack>
@@ -202,7 +199,7 @@ export const ZonesPage = () => {
               updateZone({
                 id: selectedZone?.id ?? "",
                 data: data,
-              })
+              });
             }
           }}
           initialValues={selectedZone}
@@ -211,7 +208,7 @@ export const ZonesPage = () => {
           open={uploadZonesFormOpen}
           onClose={toogleUploadZonesForm}
           onSubmit={(data) => {
-            console.log(data);
+            uploadZonesFromExel(data.file);
           }}
         />
       </Stack>

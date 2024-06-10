@@ -40,6 +40,7 @@ const STATUS_BY_ID = (id: string) => `${STATUS}/${id}`
 const PROMOTION = "/banner";
 const PROMOTION_BY_ID = (id: string) => `${PROMOTION}/${id}`
 const UPLOAD_VIDEO = "upload/video";
+const UPLOAD_MULTIPLE_ZONES = `${ZONE}/multiple`
 
 export default {
   PRODUCT,
@@ -79,4 +80,5 @@ export default {
   PROMOTION,
   PROMOTION_BY_ID,
   UPLOAD_VIDEO,
+  UPLOAD_MULTIPLE_ZONES
 };

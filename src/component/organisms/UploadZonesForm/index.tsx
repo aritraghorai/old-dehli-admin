@@ -7,33 +7,27 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
-import {
-  TimeSlotRequestForm,
-} from "@/utils/types";
-import { MuiFileInput } from 'mui-file-input'
+import { MuiFileInput } from "mui-file-input";
 import { useState } from "react";
-import AttachFileIcon from '@mui/icons-material/AttachFile'
-
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { UploadZoneFormType } from "@/utils/types";
 
 interface TimeSlotFormType extends Omit<DialogProps, "onSubmit"> {
-  onSubmit: (data: TimeSlotRequestForm) => void;
+  onSubmit: (data: UploadZoneFormType) => void;
   onClose: () => void;
 }
-
 
 const UploadZonesForm: React.FC<TimeSlotFormType> = ({
   onSubmit,
   onClose,
   ...props
 }) => {
-
   const [file, setFile] = useState<File | null>(null);
-
-
 
   const handleSubmitAndClose = (e: any) => {
     e.preventDefault();
     if (file) {
+      onSubmit({ file });
       onClose();
     }
   };
@@ -41,7 +35,6 @@ const UploadZonesForm: React.FC<TimeSlotFormType> = ({
   const handleClose = () => {
     onClose();
   };
-
 
   return (
     <Dialog onClose={handleClose} {...props}>
@@ -54,21 +47,22 @@ const UploadZonesForm: React.FC<TimeSlotFormType> = ({
           id="ShopForm"
           onSubmit={handleSubmitAndClose}
         >
-          <MuiFileInput InputProps={{
-            inputProps: {
-              accept: ".xls, .xlsx",
-            },
-            startAdornment: <AttachFileIcon />
-          }}
+          <MuiFileInput
+            InputProps={{
+              inputProps: {
+                accept: ".xls, .xlsx",
+              },
+              startAdornment: <AttachFileIcon />,
+            }}
             value={file}
             onChange={(e) => {
-              setFile(e)
+              setFile(e);
             }}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button type="submit" form="ShopForm" disabled={!!file}>
+        <Button type="submit" form="ShopForm" disabled={file === null}>
           Upload
         </Button>
         <Button color="error" onClick={handleClose}>

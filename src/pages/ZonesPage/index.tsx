@@ -26,6 +26,8 @@ import useZones from "@/hooks/useZones";
 import ZoneForm from "@/component/organisms/ZoneForm";
 import EditIcon from "@mui/icons-material/Edit";
 import UploadZonesForm from "@/component/organisms/UploadZonesForm";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const ZonesPage = () => {
-  const { zones, isLoading, isRefetching, createZone, updateZone, uploadZonesFromExel } = useZones();
+  const { zones, isLoading, isRefetching, createZone, updateZone, uploadZonesFromExel, deleteZone } = useZones();
 
   const [selectedZone, setSelectedZone] = useState<Zone | undefined>();
 
@@ -123,6 +125,13 @@ export const ZonesPage = () => {
           }}
         >
           <EditIcon />
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            deleteZone(props.row.original.id);
+          }}
+        >
+          <DeleteIcon />
         </IconButton>
       </Stack>
     ),

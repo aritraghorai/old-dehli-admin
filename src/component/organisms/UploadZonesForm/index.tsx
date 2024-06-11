@@ -28,11 +28,13 @@ const UploadZonesForm: React.FC<TimeSlotFormType> = ({
     e.preventDefault();
     if (file) {
       onSubmit({ file });
+      setFile(null);
       onClose();
     }
   };
 
   const handleClose = () => {
+    setFile(null);
     onClose();
   };
 

@@ -1,4 +1,4 @@
-import { createNewZone, getAllZones, updateZoneById, uploadMultipleZonesFromExel } from "@/axios/api";
+import { createNewZone, deleteZoneById, getAllZones, updateZoneById, uploadMultipleZonesFromExel } from "@/axios/api";
 import apiPaths from "@/axios/apiPaths";
 import { Zone, ZoneForm } from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ const useZones = () => {
     mutationKey: ["createZone"],
     mutationFn: (data: ZoneForm) => createNewZone(data),
     onError: () => {
-      toast.error("Invalid Zone Data");
+      toast.error("InvalidAG Zone Data");
     },
     onSuccess: () => {
       toast.success("Zone created successfully");
@@ -46,15 +46,28 @@ const useZones = () => {
     },
   });
 
+  const { mutate: deleteZone, isPending: isDeleting } = useMutation({
+    mutationKey: ["deleteZone"],
+    mutationFn: (id: string) => deleteZoneById(id),
+    onError: () => {
+      toast.error("Invalid Zone Data");
+    },
+    onSuccess: () => {
+      toast.success("Zone deleted successfully");
+      refetch();
+    },
+  });
+
 
   return {
     zones: data,
-    isLoading: isLoading || isUploading,
+    isLoading: isLoading || isUploading || isDeleting,
     isRefetching,
     refetch,
     createZone: mutate,
     updateZone,
     uploadZonesFromExel,
+    deleteZone
   };
 };
 

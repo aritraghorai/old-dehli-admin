@@ -338,3 +338,8 @@ export const uploadMultipleZonesFromExel = async (file: File) => {
   );
   return response.data
 }
+
+export const deleteZoneById = async (id: string) => {
+  const response = await apiClient.delete(apiPaths.ZONE_BY_ID(id));
+  return response.data
+}

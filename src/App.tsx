@@ -114,13 +114,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "promotions",
-        element: <PromotionPage />
+        element: <PromotionPage />,
       },
       {
         path: "",
         element: <Navigate to="/dashboard" />,
       },
-
     ],
   },
   {

@@ -47,7 +47,7 @@ export const DashBoardPage = () => {
   const navigate = useNavigate();
   const { data: categories } = useCategory();
   const { productTypes } = useProductType();
-  const { shops } = useShop()
+  const { shops } = useShop();
   const { timeSlots = [] } = useTimeSlots();
 
   const {
@@ -125,8 +125,7 @@ export const DashBoardPage = () => {
         editVariant: "select",
         muiEditTextFieldProps: (row) => ({
           required: true,
-          value:
-            getValues("shopId") ?? row.row.original.shop.id ?? null,
+          value: getValues("shopId") ?? row.row.original.shop.id ?? null,
           name: "shopId",
           onChange: (e) => {
             setValue("shopId", e.target.value, {
@@ -234,17 +233,17 @@ export const DashBoardPage = () => {
             value: slot.id,
           })) ?? [],
       },
-      {
-        accessorFn: (row) => <Stack>
-          {
-            row.allowZones.map((zone) => (
-              <Typography key={zone.id}>{zone.name}</Typography>
-            ))
-          }
-        </Stack>,
-        header: "Allow Zones",
-        enableEditing: false,
-      }
+      // {
+      //   accessorFn: (row) => <Stack>
+      //     {
+      //       row.allowZones.map((zone) => (
+      //         <Typography key={zone.id}>{zone.name}</Typography>
+      //       ))
+      //     }
+      //   </Stack>,
+      //   header: "Allow Zones",
+      //   enableEditing: false,
+      // }
     ],
     [errors, categories, setValue, getValues, productTypes, timeSlots],
     //end
@@ -257,7 +256,13 @@ export const DashBoardPage = () => {
   const handleSaveProduct: MRT_TableOptions<Product>["onEditingRowSave"] =
     async ({ values, table }) => {
       Object.keys(values).forEach((key) => {
-        if (key === "name" || key === "slug" || key === "price" || key === "minOrderQuantity" || key === "priority") {
+        if (
+          key === "name" ||
+          key === "slug" ||
+          key === "price" ||
+          key === "minOrderQuantity" ||
+          key === "priority"
+        ) {
           setValue(key as keyof UpdateProductRequestBody, values[key], {
             shouldValidate: true,
           });

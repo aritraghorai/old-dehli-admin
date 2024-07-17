@@ -1,6 +1,5 @@
 import {
   Category,
-  CategoryForm,
   CreateCategoryRequestBody,
   Image,
   LoginFormBody,

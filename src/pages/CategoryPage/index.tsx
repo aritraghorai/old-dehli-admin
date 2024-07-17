@@ -5,14 +5,23 @@ import {
   MaterialReactTable,
 } from "material-react-table";
 import FlowTemplate from "@/component/templates/FlowTeamplete";
-import { Button, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import apiPaths from "@/axios/apiPaths";
-import { Category, CategoryForm, FormType } from "@/utils/types";
+import {
+  Category,
+  CategoryForm,
+  CreateCategoryRequestBody,
+  FormType,
+  UpdateCategoryRequestBody,
+} from "@/utils/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createCategory, getAllCategories, updateCategory } from "@/axios/api";
 import CreateCategoryModal from "@/component/organisms/CreateCategoryModal";
 import toast from "react-hot-toast";
 import EditIcon from "@mui/icons-material/Edit";
+import { uploadMultipleImages } from "@/utils/function";
+import ImageEditorModal from "@/component/organisms/ImageEditorModal";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 export const CategoryPage = () => {
   const [showCreateCategoryModal, setShowCreateCategoryModal] = useState(false);
@@ -20,6 +29,12 @@ export const CategoryPage = () => {
   const [slectedCategory, setSelectedCategory] = useState<
     Category | undefined
   >();
+
+  const [imageEditorModalOpen, setImageEditorModalOpen] = useState(false);
+
+  const toogleImageEditorModal = () => {
+    setImageEditorModalOpen((prev) => !prev);
+  };
 
   const selectedCategoryForm = useMemo<CategoryForm>(
     () => ({
@@ -41,7 +56,7 @@ export const CategoryPage = () => {
 
   const { mutate } = useMutation({
     mutationKey: [apiPaths.CATEGORY, "createCategory"],
-    mutationFn: (data: CategoryForm) => createCategory(data),
+    mutationFn: (data: CreateCategoryRequestBody) => createCategory(data),
     onSuccess: () => {
       toast.success("Category created successfully");
       refetch();
@@ -50,7 +65,7 @@ export const CategoryPage = () => {
 
   const { mutate: updateCateoryById } = useMutation({
     mutationKey: [apiPaths.CATEGORY, "updateCategory"],
-    mutationFn: (data: CategoryForm) =>
+    mutationFn: (data: UpdateCategoryRequestBody) =>
       updateCategory(slectedCategory?.id as string, data),
     onSuccess: () => {
       toast.success("Category updated successfully");
@@ -136,7 +151,36 @@ export const CategoryPage = () => {
         >
           <EditIcon />
         </IconButton>
+        <IconButton
+          onClick={() => {
+            setSelectedCategory(props.row.original);
+            toogleImageEditorModal();
+          }}
+        >
+          <AddPhotoAlternateIcon />
+        </IconButton>
       </Stack>
+    ),
+    renderDetailPanel: ({ row }) => (
+      <Box
+        sx={{
+          display: "grid",
+          margin: "auto",
+          gridTemplateColumns: "1fr 1fr",
+          width: "100%",
+        }}
+      >
+        {row.original.image ? (
+          <Stack direction="column">
+            <img
+              key={row.original.image.id}
+              src={row.original.image.url}
+              alt="product"
+              style={{ width: "100px", height: "100px" }}
+            />
+          </Stack>
+        ) : null}
+      </Box>
     ),
   });
 
@@ -149,14 +193,35 @@ export const CategoryPage = () => {
           formType={formType}
           open={showCreateCategoryModal}
           onClose={toggleShowCreateCategoryModal}
-          onSubmit={(data) => {
+          onSubmit={async (data) => {
             if (formType === "Create") {
-              mutate(data);
+              console.log(data);
+              const images = await uploadMultipleImages(data.image as File[]);
+              mutate({
+                ...data,
+                image: images[0],
+              });
             } else {
               updateCateoryById(data);
             }
           }}
           initialValues={selectedCategoryForm}
+        />
+        <ImageEditorModal
+          open={imageEditorModalOpen}
+          multiple={false}
+          onClose={toogleImageEditorModal}
+          images={
+            selectedCategoryForm?.image ? [selectedCategoryForm.image] : []
+          }
+          submit={async (newImages) => {
+            if (newImages.length > 0) {
+              const images = await uploadMultipleImages(newImages);
+              updateCateoryById({
+                image: images[0],
+              });
+            }
+          }}
         />
       </Stack>
     </FlowTemplate>

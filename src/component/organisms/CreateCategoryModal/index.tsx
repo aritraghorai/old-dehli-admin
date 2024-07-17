@@ -15,6 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategoryForm, FormType, categorySchema } from "@/utils/types";
 import { useEffect } from "react";
+import Dropzone from "../Dropzone";
 
 interface CreateCategoryModalProps extends Omit<DialogProps, "onSubmit"> {
   onSubmit: (data: CategoryForm) => void;
@@ -124,6 +125,17 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
               />
             )}
           />
+          {formType === "Create" ? (
+            <Dropzone
+              multiple={false}
+              onChange={(file) => {
+                setValue("image", file, {
+                  shouldValidate: true,
+                });
+              }}
+              error={errors.image?.message ? "Image is required" : ""}
+            />
+          ) : null}
         </Stack>
       </DialogContent>
       <DialogActions>

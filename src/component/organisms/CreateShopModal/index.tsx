@@ -73,6 +73,7 @@ const CreateShopModal: React.FC<CreateShopModalProps> = ({
             {...register("description")}
           />
           <Dropzone
+            multiple={false}
             onChange={(file) => {
               setValue("images", file, {
                 shouldValidate: true,

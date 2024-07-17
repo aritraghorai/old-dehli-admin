@@ -176,9 +176,16 @@ export const categorySchema = z.object({
   slug: z.string().min(3).max(255),
   parentCategoryId: z.string().uuid().optional(),
   description: z.string().min(3).max(255).optional(),
+  image: z.any(),
 });
 
 export type CategoryForm = z.infer<typeof categorySchema>;
+export type CreateCategoryRequestBody = Omit<CategoryForm, "image"> & {
+  image: string;
+};
+export type UpdateCategoryRequestBody = Partial<Omit<CategoryForm, "image">> & {
+  image?: string;
+};
 
 export const ShopFormScham = z.object({
   name: z
@@ -350,7 +357,7 @@ export const UpdateOrderFormSchema = z.object({
           message:
             "Status must be one of these: Shipped, Delivered, Cancelled, Processing",
         }),
-      }
+      },
     )
     .optional(),
   paymentStatus: z

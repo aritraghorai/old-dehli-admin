@@ -69,7 +69,7 @@ export const OrderPage = () => {
   >();
 
   const { mutate: updateOrderById } = useMutation({
-    mutationKey: [apiPaths.CATEGORY, "updateCategory"],
+    mutationKey: [apiPaths.CATEGORY, "updateOrder"],
     mutationFn: ({ id, data }: { data: UpdateOrderRequestBody; id: string }) =>
       updateOrder(id, data),
     onSuccess: () => {
@@ -84,8 +84,9 @@ export const OrderPage = () => {
   }) => {
     try {
       const parseValues = await UpdateOrderFormSchema.parseAsync(values, {});
+      console.log(values);
       updateOrderById({
-        id: values.id,
+        id: values.Id,
         data: parseValues,
       });
       setShopValidationErrors(undefined);

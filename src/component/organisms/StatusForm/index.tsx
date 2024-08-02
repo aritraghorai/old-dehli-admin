@@ -58,7 +58,7 @@ const StatusForm: React.FC<StatusFormType> = ({
     onClose();
   };
   watch((val) => {
-    console.log(val)
+    console.log(val);
   });
 
   useEffect(() => {
@@ -87,15 +87,14 @@ const StatusForm: React.FC<StatusFormType> = ({
             error={!!errors.name}
             helperText={errors.name?.message}
           />
-          <Typography variant="body2" color="textSecondary">Video</Typography>
-          <Button
-            variant="contained"
-            component="label"
-          >
+          <Typography variant="body2" color="textSecondary">
+            Content
+          </Typography>
+          <Button variant="contained" component="label">
             Upload File
             <input
               type="file"
-              accept="video/*"
+              accept="video/*,image/*"
               hidden
               onChange={(e) => {
                 const file = e.target.files?.[0];
@@ -114,7 +113,6 @@ const StatusForm: React.FC<StatusFormType> = ({
             error={!!errors.description}
             helperText={errors.description?.message}
           />
-
         </Stack>
       </DialogContent>
       <DialogActions>

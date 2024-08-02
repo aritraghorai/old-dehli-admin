@@ -23,6 +23,8 @@ export const StatusPage = () => {
     isRefetching,
   } = useStatus();
 
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "svg"];
+
   const [statusFormType, setStatusFormType] = useState<FormType>("Create");
 
   const [showStatusFormModal, setStatusFormModal] = useState(false);
@@ -50,7 +52,18 @@ export const StatusPage = () => {
       {
         accessorFn: (row) => (
           <Stack direction="row" gap={2}>
-            <video width="320" height="240" controls src={row.video_url}></video>
+            {imageExtensions.includes(
+              row.video_url.split(".").pop()?.toLowerCase() as string,
+            ) ? (
+              <img width="320" height="240" src={row.video_url} />
+            ) : (
+              <video
+                width="320"
+                height="240"
+                controls
+                src={row.video_url}
+              ></video>
+            )}
           </Stack>
         ),
         header: "Video",
@@ -123,19 +136,19 @@ export const StatusPage = () => {
         formType={statusFormType}
         onSubmit={async (data) => {
           if (statusFormType === "Create") {
-            const video = await uploadLoadVideo(data.video)
+            const video = await uploadLoadVideo(data.video);
             addStatus({
               video_url: video.url,
-              ...data
+              ...data,
             });
           } else {
-            const video = await uploadLoadVideo(data.video)
+            const video = await uploadLoadVideo(data.video);
             updateStatus({
               id: selectedStatus?.id as string,
               data: {
                 ...data,
-                video_url: video.url
-              }
+                video_url: video.url,
+              },
             });
             setSelectedStatus(undefined);
             setStatusFormType("Create");

@@ -15,7 +15,7 @@ const useStatus = () => {
     queryFn: getAllStatus,
   });
 
-  const { mutate: addStatus } = useMutation({
+  const { mutate: addStatus, isPending: isAdding } = useMutation({
     mutationKey: ["addStatus", apiPaths.STATUS],
     mutationFn: (data: StatusRequestBody) => createNewStatus(data),
     onSuccess: () => {
@@ -24,7 +24,7 @@ const useStatus = () => {
     },
   });
 
-  const { mutate: updateStatus } = useMutation({
+  const { mutate: updateStatus, isPending: isUpdating } = useMutation({
     mutationKey: ["updateStatus", apiPaths.STATUS],
     mutationFn: ({ data, id }: { data: StatusRequestBody; id: string }) =>
       updateStatusById(id, data),
@@ -34,7 +34,7 @@ const useStatus = () => {
     },
   });
 
-  const { mutate: deleteStatus } = useMutation({
+  const { mutate: deleteStatus, isPending: isDeleting } = useMutation({
     mutationKey: ["deleteStatus", apiPaths.STATUS],
     mutationFn: (id: string) => deleteStatusById(id),
     onSuccess: () => {
@@ -45,7 +45,7 @@ const useStatus = () => {
 
   return {
     status: data,
-    isLoading,
+    isLoading: isLoading || isAdding || isUpdating || isDeleting,
     isRefetching,
     addStatus,
     updateStatus,

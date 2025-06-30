@@ -28,7 +28,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import UploadZonesForm from "@/component/organisms/UploadZonesForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -50,7 +49,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const ZonesPage = () => {
-  const { zones, isLoading, isRefetching, createZone, updateZone, uploadZonesFromExel, deleteZone } = useZones();
+  const {
+    zones,
+    isLoading,
+    isRefetching,
+    createZone,
+    updateZone,
+    uploadZonesFromExel,
+    deleteZone,
+  } = useZones();
 
   const [selectedZone, setSelectedZone] = useState<Zone | undefined>();
 
@@ -80,8 +87,13 @@ export const ZonesPage = () => {
         header: "Delivery Charges",
         enableEditing: false,
       },
+      {
+        accessorKey: "minOrderValue",
+        header: "Min Order Value",
+        enableEditing: false,
+      },
     ],
-    []
+    [],
   );
 
   const table = useMaterialReactTable({

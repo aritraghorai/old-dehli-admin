@@ -397,6 +397,7 @@ export const ZoneFormSchema = z.object({
   deliveryCharges: z.coerce.number().min(0),
   pincodes: z.array(z.string().uuid()).optional(),
   products: z.array(z.string().uuid()).optional(),
+  minOrderValue: z.coerce.number().min(0),
 });
 
 export type ZoneForm = z.infer<typeof ZoneFormSchema>;
@@ -405,6 +406,7 @@ export type Zone = {
   id: string;
   name: string;
   deliveryCharges: number;
+  minOrderValue: number;
   pincodes: Array<Pincode>;
   products: Array<Product>;
   createdAt: string;

@@ -74,6 +74,9 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
       setValue("deliveryCharges", initialValues.deliveryCharges, {
         shouldValidate: true,
       });
+      setValue("minOrderValue", initialValues.minOrderValue, {
+        shouldValidate: true,
+      });
       setValue(
         "pincodes",
         initialValues.pincodes.map((a) => a.id),
@@ -88,9 +91,9 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
   }, [initialValues, setValue]);
 
   return (
-    <Dialog onClose={handleClose} {...props} fullScreen >
+    <Dialog onClose={handleClose} {...props} fullScreen>
       <DialogTitle>{formType} New Zone</DialogTitle>
-      <DialogContent >
+      <DialogContent>
         <Stack
           gap={3}
           // width="400px"
@@ -98,7 +101,6 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
           id="crateZone"
           onSubmit={handleSubmit(handleSubmitAndClose)}
         >
-
           <Autocomplete
             id="tags-standard"
             options={pinCodes ?? []}
@@ -156,8 +158,8 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
 
               return filtered;
             }}
-
             getOptionLabel={(data) => data.pincode}
+            getOptionKey={() => crypto.randomUUID().toString()}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -173,10 +175,10 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
             id="tags-standard"
             options={products ?? []}
             filterOptions={(options, params) => {
-              const filter = createFilterOptions()
-              const filtered = filter(options, params as any)
-              const allProduct = { name: 'Select All...', all: true } as any
-              return [allProduct, ...filtered]
+              const filter = createFilterOptions();
+              const filtered = filter(options, params as any);
+              const allProduct = { name: "Select All...", all: true } as any;
+              return [allProduct, ...filtered];
             }}
             multiple
             limitTags={2}
@@ -184,19 +186,19 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
               if (value.find((val: any) => val.all)) {
                 setValue(
                   "products",
-                  getValues("products")?.length === products.length ? [] : products.map((a) => a.id),
+                  getValues("products")?.length === products.length
+                    ? []
+                    : products.map((a) => a.id),
                   { shouldValidate: true },
-                )
-                return
+                );
+                return;
               }
               setValue(
                 "products",
                 value.map((a: any) => a.id),
                 { shouldValidate: true },
-              )
-
-            }
-            }
+              );
+            }}
             value={
               products?.filter((cat) =>
                 watch("products")?.some((a) => a === cat.id),
@@ -232,7 +234,13 @@ const ZoneForm: React.FC<CreateCategoryModalProps> = ({
             helperText={errors.deliveryCharges?.message}
             {...register("deliveryCharges")}
           />
-
+          <TextField
+            label="Min Order Value"
+            variant="outlined"
+            error={!!errors.minOrderValue?.message}
+            helperText={errors.minOrderValue?.message}
+            {...register("minOrderValue")}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
